@@ -52,6 +52,10 @@
                     </li>
                 </ul>
             </li>
+        @elseif (Auth::business())
+          <li><a href="/manageRewards">Manage Rewards</a></li>
+          <li><a href="/statistics">Statistics</a></li>
+          <li><a href="/manageEmployees">Mange Employees</a></li>
         @endif
     </ul>
 </div>
