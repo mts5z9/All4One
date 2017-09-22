@@ -4,7 +4,7 @@ namespace all4one\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class BusinessController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -21,6 +21,6 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(){ return view('admin/admin'); }
-    public function scanner(){ return view('admin/scanner'); }
+    public function manageRewards(){ return view('business/manage-rewards'); }
+    public function manageEmployees(){ return view('business/manage-employees'); }
 }
