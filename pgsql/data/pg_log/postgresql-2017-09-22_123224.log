@@ -1,0 +1,20 @@
+2017-09-22 12:32:25 CDT LOG:  database system was shut down at 2017-09-22 12:31:50 CDT
+2017-09-22 12:32:25 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-09-22 12:32:25 CDT LOG:  database system is ready to accept connections
+2017-09-22 12:32:25 CDT LOG:  autovacuum launcher started
+2017-09-22 12:35:10 CDT FATAL:  password authentication failed for user "postgres"
+2017-09-22 12:35:10 CDT DETAIL:  Password does not match for user "postgres".
+	Connection matched pg_hba.conf line 82: "host    all             all             ::1/128                 md5"
+2017-09-22 13:17:16 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-09-22 13:17:16 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-09-22 13:17:16 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-09-22 19:57:47 CDT LOG:  received fast shutdown request
+2017-09-22 19:57:47 CDT LOG:  aborting any active transactions
+2017-09-22 19:57:47 CDT LOG:  autovacuum launcher shutting down
+2017-09-22 19:57:47 CDT ERROR:  canceling statement due to user request
+2017-09-22 19:57:47 CDT LOG:  autovacuum launcher shutting down
+2017-09-22 19:57:47 CDT LOG:  shutting down
+2017-09-22 19:57:47 CDT LOG:  database system is shut down
