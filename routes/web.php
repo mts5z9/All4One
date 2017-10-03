@@ -10,9 +10,7 @@
 Route::get('/', function () {
     return view('home');
 });
-Route::get('/editAccount', function() {
-  return view('edit-account');
-});
+
 
 Auth::routes();
 Route::resource('/user', 'UserController');
@@ -20,7 +18,9 @@ Route::resource('/user', 'UserController');
 Route::get('/portalDirect', function() {
   return view('home');
 })->middleware('portal');
-
+Route::get('/editAccount', function() {
+  return view('auth/edit-account');
+});
 
 //Patron Portal Routes
 Route::get('/redeem', function() {

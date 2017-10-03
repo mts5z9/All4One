@@ -1,1 +1,1 @@
-C:/xampp/pgsql/9.6/bin/postgres.exe "-D" "C:\xampp\htdocs\All4One\pgsql\data"
+c:/xampp/pgsql/9.6/bin/postgres.exe "-D" "C:\xampp\htdocs\All4One\pgsql\data"
