@@ -72,8 +72,10 @@ trait AuthenticatesUsers
      */
     protected function attemptLogin(Request $request)
     {
+        $credentials = $this->Credentials($request);
+        $credentials['email'] = strtolower($credentials['email']);
         return $this->guard()->attempt(
-            $this->credentials($request), $request->has('remember')
+            $credentials, $request->has('remember')
         );
     }
 

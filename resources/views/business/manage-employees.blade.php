@@ -16,16 +16,21 @@
                       <th style="width: 30%">buttons</th>
                     </tr>
                     <!--populate from database -->
-                    <tr>
-                      <td>John Smith</td>
-                      <td>employee1@gmail.com</td>
-                      <td>Employee</td>
-                      <td>
-                        <button type="button" class="btn btn-info" name="redeem">Edit</button>
-                        <button type="button" class="btn btn-info" name="type">Promote Admin</button>
-                        <button type="button" class="btn btn-info" name="redeem">Remove</button>
-                      </td>
-                    </tr>
+                    <tbody>
+                      @foreach ($employees as $employee)
+                      <tr>
+                        <td>{{$employee->firstName}}{{$employee->lastName}}</td>
+                        <td>{{$employee->email}}</td>
+                        <td>{{$employee->role}}</td>
+                        <td>
+                          @if($employee->role == 'employee' && Auth::user()->role == 'Owner')<button type="button" class="btn btn-info" name="type">Grant Admin</button>
+                          @elseif($employee->role == 'bAdmin' && Auth::user()->role == 'Owner')<button type="button" class="btn btn-info" name="revoke">Revoke Admin</button>@endif
+                          <a href="/user/{{ $employee->id }}/edit" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                          <button type="button" class="btn btn-info" name="remove">Remove</button>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                   </table>
                 </div>
             </div>

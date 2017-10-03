@@ -5,7 +5,7 @@ namespace all4one\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class BusinessOwnerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->role == 'admin')
+      if(Auth::user()->role == 'Owner')
       {
           return $next($request);
       }else

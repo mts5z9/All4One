@@ -25,6 +25,12 @@
 
   function handleDragStop(event, ui) {
     changeColor('success');
+    <?php
+    //$date = new DateTime();
+    //DB::table('SCAN')->insert(
+    //  ['cardID' => '1234','timeStamp'=>$date,'locationID'=>'12345','businessID'=>'4231']
+    //);
+    ?>
   }
 </script>
 @section('content')

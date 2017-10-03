@@ -82,22 +82,7 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => all4one\User::class,
-        ],
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Admin::class,
-        ],
-        'employees' => [
-            'driver' => 'eloquent',
-            'model' => App\Employee::class,
-        ],
-        'businessAdmins' => [
-            'driver' => 'eloquent',
-            'model' => App\BusinessAdmins::class,
-        ],
-        'business' => [
-            'driver' => 'eloquent',
-            'model' => App\Business::class,
+            //'table' => 'USERS',
         ],
 
         // 'users' => [
