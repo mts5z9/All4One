@@ -38,8 +38,8 @@ class UserController extends Controller
 
     public function edit($id)
     {
-      $user = User::find($id);
-      return view('auth.edit-account', ['user'=>$user]);
+      $employee = User::find($id);
+      return view('business.edit-employee', ['employee'=>$employee]);
     }
 
     public function update($email)
