@@ -3,6 +3,7 @@
 namespace all4one\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class PatronMiddleware
 {
@@ -15,8 +16,10 @@ class PatronMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->user_type ==1)
-        return $next($request);
-      return redirect('/');
+      if(Auth::user()->role == 'patron')
+      {
+          return $next($request);
+      }else
+        return redirect('/');
     }
 }

@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/portalDirect';
 
     /**
      * Create a new controller instance.
@@ -48,8 +48,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'phone' => 'required|string|max:10',
+            'address1' => 'required|string',
+            'address2' => 'nullable|string',
+            'city' => 'string',
+            'state' => 'string|max:2',
+            'postalCode' => 'string|max:5',
+            'email' => 'required|string|email|max:255|unique:USERS',
             'password' => 'required|string|min:6|confirmed',
         ]);
     }
@@ -62,10 +69,22 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $role = 'patron';
+        $status = 'actv';
+        $data['email'] = strtolower($data['email']);
         return User::create([
-            'name' => $data['name'],
+            'firstName' => $data['firstName'],
+            'lastName' => $data['lastName'],
+            'role' => $role,
+            'phone' => $data['phone'],
+            'address1' => $data['address1'],
+            'address2' => $data['address2'],
+            'city' => $data['city'],
+            'state' => $data['state'],
+            'postalCode' => $data['postalCode'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+            'status' => $status,
         ]);
     }
 }

@@ -4,20 +4,22 @@ namespace all4one;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Auth;
 
 class User extends Authenticatable
 {
     use Notifiable;
-
+    protected $table = 'USERS';
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'email', 'password', 'status', 'lastName',
+        'firstName', 'phone', 'address1', 'address2',
+        'city', 'state','postalCode', 'status', 'role', 'id',
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -26,4 +28,5 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
 }

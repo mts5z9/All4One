@@ -1,39 +1,75 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
-|
 */
-
 Route::get('/', function () {
     return view('home');
 });
 
+
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
-Route::get('/redeem', 'HomeController@redeem');
-Route::get('/scanHistory', 'HomeController@scanHistory');
-Route::get('/rewardHistory', 'HomeController@rewardHistory');
+Route::get('/portalDirect', function() {
+  return view('home');
+})->middleware('portal');
+//User Routes
+Route::get('/editAccount/{id}', function ($id) {
+  $user = DB::table('USERS')
+    ->where('id', $id)->first();
+  return view('auth.edit-account', ['user' => $user]);
+});
+Route::post('/account-edit/{id}', 'UserController@editAccount');
 
-//Route::get('/manageRewards', function() {
-//  return view('business/manage-rewards');
-//})->middleware('business');
-Route::get('/manageRewards', 'BusinessController@manageRewards');
-Route::get('/manageEmployees', 'BusinessController@manageEmployees');
+//Patron Portal Routes
+Route::get('/redeem', function() {
+  return view('patron/redeem');
+})->middleware('patron');
+Route::get('/scanHistory', function() {
+  return view('patron/scan-history');
+})->middleware('patron');
+Route::get('/rewardHistory', function() {
+  return view('patron/reward-history');
+})->middleware('patron');
 
-Route::get('/scanner', 'AdminController@scanner');
+//Business Portal Routes
+Route::get('/businessWelcome', function () {
+  return view('business/business-welcome');
+});
+Route::get('/businessRegister', 'Auth\BusinessRegisterController@show');
+Route::post('/business-register', 'Auth\BusinessRegisterController@register');
+Route::get('/addEmployee', 'Auth\EmployeeRegisterController@show');
+Route::post('/employee-register', 'Auth\EmployeeRegisterController@registerEmployee');
+Route::post('/employee-edit/{id}', 'Auth\EmployeeRegisterController@editEmployee');
+Route::get('modifyRole/{id}/{userRole}', 'Auth\EmployeeRegisterController@modifyRole');
+Route::get('deleteEmployee/{id}', 'Auth\EmployeeRegisterController@removeEmployee');
+Route::get('/manageScans', function() {
+  return view('business/manage-scans');
+})->middleware('employee');
+Route::get('/manageRewards', function() {
+  return view('business/manage-rewards');
+})->middleware('employee');
+Route::get('/manageEmployees', function() {
+  $employees = DB::table('USERS')
+    ->where('role', 'employee')
+    ->orWhere('role', 'bAdmin')
+    ->select('firstName','lastName','email','role','id')
+    ->orderby('lastName', 'asc')->get(); //Need query for business employees
+  return view('business/manage-employees',['employees' => $employees]);
+})->middleware('businessAdmin');
+Route::get('/editEmployee/{id}', function($id) {
+  $employee = DB::table('USERS')
+    ->where('id', $id)->first();
+  return view('business.edit-employee', ['employee' => $employee]);
+});
 
-//Route::prefix('admin')->group(function() {
-//  Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-//  Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-//  Route::get('/admin', 'AdminController@index')->name('admin.dashboard');
-//});
 
-Route::get('/employee', 'EmployeeController@index');
+
+//Admin Portal Routes
+Route::get('/scanner', function() {
+  return view('admin/scanner');
+})->middleware('admin');

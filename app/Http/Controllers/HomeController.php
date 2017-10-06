@@ -16,13 +16,8 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(){ return view('patron/redeem'); }
-    public function redeem(){ return view('patron/redeem'); }
-    public function scanHistory(){ return view('patron/scan-history'); }
-    public function rewardHistory(){ return view('patron/reward-history'); }
+
+
+
+
 }

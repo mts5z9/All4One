@@ -56,8 +56,11 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \all4one\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'user' => \App\Http\Middleware\UserMiddleware::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
-        'business' => \App\Http\Middleware\BusinessMiddleware::class,
+        'patron' => \all4one\Http\Middleware\PatronMiddleware::class,
+        'admin' => \all4one\Http\Middleware\AdminMiddleware::class,
+        'employee' => \all4one\Http\Middleware\EmployeeMiddleware::class,
+        'businessAdmin' => \all4one\Http\Middleware\BusinessAdminMiddleware::class,
+        'businessOwner' => \all4one\Http\Middleware\BusinessOwnerMiddleware::class,
+        'portal' => \all4one\Http\Middleware\PortalMiddleware::class,
     ];
 }

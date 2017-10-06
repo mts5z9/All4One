@@ -12,8 +12,8 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'All4One'),
-    'name' => 'All4One',
+    'name' => env('APP_NAME', 'all4one'),
+    'name' => 'all4one',
 
     /*
     |--------------------------------------------------------------------------

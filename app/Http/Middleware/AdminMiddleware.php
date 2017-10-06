@@ -3,6 +3,7 @@
 namespace all4one\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
 
 class AdminMiddleware
 {
@@ -15,8 +16,10 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->user_type == 2)
-        return $next($request);
-      return redirect('/');
+      if(Auth::user()->role == 'admin')
+      {
+          return $next($request);
+      }else
+        return redirect('/');
     }
 }

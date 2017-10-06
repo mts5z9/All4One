@@ -1,0 +1,42 @@
+2017-10-03 12:34:28 CDT LOG:  database system was interrupted while in recovery at 2017-10-03 12:32:11 CDT
+2017-10-03 12:34:28 CDT HINT:  This probably means that some data is corrupted and you will have to use the last backup for recovery.
+2017-10-03 12:34:29 CDT LOG:  database system was not properly shut down; automatic recovery in progress
+2017-10-03 12:34:29 CDT LOG:  redo starts at 0/1769318
+2017-10-03 12:34:29 CDT LOG:  invalid record length at 0/177CF68: wanted 24, got 0
+2017-10-03 12:34:29 CDT LOG:  redo done at 0/177CF30
+2017-10-03 12:34:29 CDT LOG:  last completed transaction was at log time 2017-09-30 11:53:49.960109-05
+2017-10-03 12:34:29 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-10-03 12:34:29 CDT LOG:  database system is ready to accept connections
+2017-10-03 12:34:29 CDT LOG:  autovacuum launcher started
+2017-10-03 13:35:55 CDT ERROR:  relation "user_id_seq" does not exist
+2017-10-03 13:35:55 CDT STATEMENT:  ALTER TABLE public."USERS"
+	    ALTER COLUMN id SET DEFAULT ('USER_id_seq'::regclass);
+2017-10-03 13:37:12 CDT ERROR:  relation "user_id_seq" does not exist
+2017-10-03 13:37:12 CDT STATEMENT:  ALTER TABLE public."USERS"
+	    ALTER COLUMN id SET DEFAULT nextval('USER_id_seq'::regclass);
+2017-10-03 13:37:17 CDT ERROR:  column "user_id_seq" does not exist
+2017-10-03 13:37:17 CDT STATEMENT:  ALTER TABLE public."USERS"
+	    ALTER COLUMN id SET DEFAULT nextval(USER_id_seq::regclass);
+2017-10-03 13:37:36 CDT ERROR:  relation "user_id_seq" does not exist
+2017-10-03 13:37:36 CDT STATEMENT:  ALTER TABLE public."USERS"
+	    ALTER COLUMN id SET DEFAULT nextval('USER_id_seq'::regclass);
+2017-10-03 13:38:32 CDT ERROR:  relation "user_id_seq" does not exist
+2017-10-03 13:38:32 CDT STATEMENT:  ALTER TABLE public."USERS"
+	    ALTER COLUMN id SET DEFAULT nextval('USER_id_seq'::regclass);
+2017-10-03 14:08:51 CDT ERROR:  value too long for type character(20)
+2017-10-03 14:08:51 CDT STATEMENT:  insert into "USERS" ("firstName", "lastName", "role", "phone", "address1", "address2", "city", "state", "postalCode", "email", "password", "status", "updated_at", "created_at") values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) returning "id"
+2017-10-03 14:14:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-03 14:14:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-03 14:14:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-03 14:14:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-03 14:15:10 CDT LOG:  received fast shutdown request
+2017-10-03 14:15:10 CDT LOG:  aborting any active transactions
+2017-10-03 14:15:10 CDT LOG:  autovacuum launcher shutting down
+2017-10-03 14:15:10 CDT ERROR:  canceling statement due to user request
+2017-10-03 14:15:10 CDT LOG:  autovacuum launcher shutting down
+2017-10-03 14:15:10 CDT LOG:  shutting down
+2017-10-03 14:15:10 CDT LOG:  database system is shut down

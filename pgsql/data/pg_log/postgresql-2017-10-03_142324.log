@@ -1,0 +1,12 @@
+2017-10-03 14:23:24 CDT LOG:  database system was shut down at 2017-10-03 14:22:46 CDT
+2017-10-03 14:23:24 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-10-03 14:23:24 CDT LOG:  database system is ready to accept connections
+2017-10-03 14:23:24 CDT LOG:  autovacuum launcher started
+2017-10-03 14:40:09 CDT LOG:  received fast shutdown request
+2017-10-03 14:40:09 CDT LOG:  aborting any active transactions
+2017-10-03 14:40:09 CDT FATAL:  terminating connection due to administrator command
+2017-10-03 14:40:09 CDT FATAL:  terminating connection due to administrator command
+2017-10-03 14:40:09 CDT FATAL:  terminating connection due to administrator command
+2017-10-03 14:40:09 CDT LOG:  autovacuum launcher shutting down
+2017-10-03 14:40:09 CDT LOG:  shutting down
+2017-10-03 14:40:09 CDT LOG:  database system is shut down
