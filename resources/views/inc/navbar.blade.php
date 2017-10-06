@@ -59,7 +59,7 @@
                                    document.getElementById('logout-form').submit();">
                           Logout
                       </a>
-                      <a href="/editAccount">Edit Account</a>
+                      <a href="/editAccount/{{Auth::user()->id}}">Edit Account</a>
                       <?php if(Auth::user()->role == 'patron') { ?>
                         <a href="/registerCard">Register Card</a>
                       <?php } ?>

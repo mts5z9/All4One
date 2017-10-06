@@ -1,4 +1,6 @@
 @extends('layouts.app')
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script type="text/javascript">
   function changeColor(status){
     var div = document.getElementById('standby');
@@ -7,10 +9,6 @@
        div.setAttribute("id","standby");
     }, 1000);
   }
-</script>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
   $( function() {
     $( "#draggable" ).draggable({
       snap: '.dragsnap',
