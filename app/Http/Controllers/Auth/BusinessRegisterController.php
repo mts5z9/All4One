@@ -25,8 +25,9 @@ class BusinessRegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        $this->createBusiness($request->all());
         event(new Registered($user = $this->create($request->all())));
+        $businessId = $this->createBusiness($request->all());
+        $this->linkBusiness($businessId,$request->all());
         $this->guard()->login($user);
         return redirect('/portalDirect');
     }
@@ -94,14 +95,40 @@ class BusinessRegisterController extends Controller
     protected function createBusiness(array $data)
     {
       $data['businessEmail'] = strtolower($data['businessEmail']);
-      DB::table('BUSINESS')
-        ->insert([
+      $businessId = DB::table('BUSINESS')
+        ->insertGetId(
+                [
                   'businessName' => $data['businessName'],
                   'category' => $data['category'],
                   'busDescr' => $data['busDescr'],
                   'businessEmail' => $data['businessEmail'],
                   'phone' => $data['businessPhone'],
-                ]);
-      return;
+                ],'businessID');
+      return $businessId;
+    }
+
+    protected function linkBusiness(int $businessId,array $data)
+    {
+      $locationId = DB::table("LOCATION")
+        ->insertGetId([
+          'businessID' => $businessId,
+          'address1' => $data['businessAddress1'],
+          'address2' => $data['businessAddress2'],
+          'city' => $data['businessCity'],
+          'state' => $data['businessState'],
+          'postalCode' => $data['businessPostalCode'],
+          'email' => $data['businessEmail'],
+          'phone' => $data['businessPhone'],
+          'locationStatus' => 'active',
+        ],'locationID');
+
+      DB::table("EMPLOYEE")
+        ->insert([
+            'businessID' => $businessId,
+            'emplid' => $data['email'],
+            'empStatus' => 'actv',
+            'locationID' => $locationId,
+        ]);
+        return;
     }
 }

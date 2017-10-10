@@ -49,3 +49,17 @@
 	
 2017-10-06 14:00:41 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
 	
+2017-10-06 15:04:32 CDT ERROR:  null value in column "businessID" violates not-null constraint
+2017-10-06 15:04:32 CDT DETAIL:  Failing row contains (7, null, reward1                                                         ..., this is reward 1, 5, 2017-05-05, 2017-05-07, null).
+2017-10-06 15:04:32 CDT STATEMENT:  insert into "REWARD" ("title", "descr", "pointsNeeded", "beginDate", "endDate") values ($1, $2, $3, $4, $5)
+2017-10-06 15:05:35 CDT ERROR:  null value in column "rewardStatus" violates not-null constraint
+2017-10-06 15:05:35 CDT DETAIL:  Failing row contains (8, 4, reward1                                                         ..., this is reward 1, 5, 2017-05-05, 2017-05-07, null).
+2017-10-06 15:05:35 CDT STATEMENT:  insert into "REWARD" ("title", "descr", "pointsNeeded", "beginDate", "endDate", "businessID") values ($1, $2, $3, $4, $5, $6)
+2017-10-06 22:05:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-06 22:05:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-06 22:05:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-06 22:05:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
