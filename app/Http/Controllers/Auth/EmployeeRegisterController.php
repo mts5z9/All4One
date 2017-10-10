@@ -18,9 +18,17 @@ class EmployeeRegisterController extends Controller
 
     public function show()
     {
-        return view('auth.employee-register');
-    }
+      $businessId = DB::table('EMPLOYEE')
+        ->where('emplid', Auth::user()->email)
+        ->value('businessID');
 
+      $locations = DB::table('LOCATION')
+        ->where('businessID', $businessId)
+        ->select('locationID','address1','address2','city','state','postalCode','email','phone')
+        ->orderby('locationID', 'asc')->get(); //Need query for business employees
+
+        return view('auth.employee-register',['locations' => $locations]);
+    }
     public function registerEmployee(Request $request)
     {
         $this->validator($request->all())->validate();
@@ -57,11 +65,6 @@ class EmployeeRegisterController extends Controller
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'phone' => 'required|string|max:10',
-            'address1' => 'required|string',
-            'address2' => 'nullable|string',
-            'city' => 'string',
-            'state' => 'string|max:2',
-            'postalCode' => 'string|max:5',
             'email' => 'required|string|email|max:255|unique:USERS',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -73,11 +76,6 @@ class EmployeeRegisterController extends Controller
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
             'phone' => 'required|string|max:10',
-            'address1' => 'required|string',
-            'address2' => 'nullable|string',
-            'city' => 'string',
-            'state' => 'string|max:2',
-            'postalCode' => 'string|max:5',
             'email' => 'required|string|email|max:255',
         ]);
       }else
@@ -85,33 +83,42 @@ class EmployeeRegisterController extends Controller
               'firstName' => 'required|string|max:255',
               'lastName' => 'required|string|max:255',
               'phone' => 'required|string|max:10',
-              'address1' => 'required|string',
-              'address2' => 'nullable|string',
-              'city' => 'string',
-              'state' => 'string|max:2',
-              'postalCode' => 'string|max:5',
               'email' => 'required|string|email|max:255|unique:USERS',
           ]);
     }
     protected function create(array $data)
     {
+        $location = DB::table('LOCATION')
+          ->where('locationID',$data['location'])
+          ->first();
         $role = 'employee';
         $status = 'actv';
         $data['email'] = strtolower($data['email']);
-        return User::create([
+
+        $user = User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
             'role' => $role,
             'phone' => $data['phone'],
-            'address1' => $data['address1'],
-            'address2' => $data['address2'],
-            'city' => $data['city'],
-            'state' => $data['state'],
-            'postalCode' => $data['postalCode'],
+            'address1' => $location->address1,
+            'address2' => $location->address2,
+            'city' => $location->city,
+            'state' => $location->state,
+            'postalCode' => $location->postalCode,
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'status' => $status,
         ]);
+
+        DB::table("EMPLOYEE")
+          ->insert([
+              'businessID' => $location->businessID,
+              'emplid' => $data['email'],
+              'empStatus' => 'actv',
+              'locationID' => $location->locationID,
+        ]);
+        
+        return $user;
     }
     protected function editCreate(array $data, $id)
     {

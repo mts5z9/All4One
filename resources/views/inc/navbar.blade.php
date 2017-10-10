@@ -40,7 +40,8 @@
             echo '<li><a href="/manageScans">Manage Scans</a></li>';
               if($userRole == 'bAdmin' || $userRole == 'Owner'){
                 echo '<li><a href="/manageRewards">Manage Rewards</a></li>
-                      <li><a href="/manageEmployees">Manage Employees</a></li>';
+                      <li><a href="/manageEmployees">Manage Employees</a></li>
+                      <li><a href="/manageLocations">Manage Locations</a></li>';
               }
            }
         //admin links
@@ -60,20 +61,17 @@
                           Logout
                       </a>
                       <a href="/editAccount/{{Auth::user()->id}}">Edit Account</a>
-                      <?php if(Auth::user()->role == 'patron') { ?>
-                        <a href="/registerCard">Register Card</a>
-                      <?php } ?>
+                            @if(Auth::user()->role == 'patron')
+                              <a href="/registerCard">Register Card</a>
+                            @elseif(Auth::user()->role == 'Owner')
+                              <a href="/editBusinessAccount">Edit Business Information</a>
+                            @endif
                       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                           {{ csrf_field() }}
                       </form>
                   </li>
                 </ul>
             </li>
-        <?php if(Auth::user()->role == 'Employee') { ?>
-          <li><a href="/manageRewards">Manage Rewards</a></li>
-          <li><a href="/statistics">Statistics</a></li>
-          <li><a href="/manageEmployees">Manage Employees</a></li>
-        <?php } ?>
         @endif
     </ul>
 </div>
