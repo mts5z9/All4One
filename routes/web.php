@@ -24,7 +24,8 @@ Route::get('/editAccount/{id}', function ($id) {
   return view('auth.edit-account', ['user' => $user]);
 });
 Route::post('/account-edit/{id}', 'UserController@editAccount');
-
+Route::get('/changePassword','UserController@showChangePassword');
+Route::post('/change-password','UserController@changePassword');
 //Patron Portal Routes
 Route::get('/redeem', function() {
   return view('patron/redeem');
@@ -35,6 +36,11 @@ Route::get('/scanHistory', function() {
 Route::get('/rewardHistory', function() {
   return view('patron/reward-history');
 })->middleware('patron');
+Route::middleware(['patron'])->group(function () {
+  Route::get('/registerCard','PatronController@showRegister');
+  Route::post('/register-card','PatronController@registerCard');
+  Route::get('/participatingBusinesses','PatronController@showParticipatingBusinesses');
+});
 
 //Business Portal Routes
 Route::get('/businessWelcome', function () {
@@ -50,8 +56,8 @@ Route::middleware(['businessAdmin'])->group(function() {
   Route::get('/addEmployee', 'Auth\EmployeeRegisterController@show');
   Route::get('modifyRole/{id}/{userRole}', 'Auth\EmployeeRegisterController@modifyRole');
   Route::post('/employee-register', 'Auth\EmployeeRegisterController@registerEmployee');
-  Route::post('/employee-edit/{id}', 'Auth\EmployeeRegisterController@editEmployee');
-  Route::get('deleteEmployee/{id}', 'Auth\EmployeeRegisterController@removeEmployee');
+  Route::post('/employee-edit/{id}', 'BusinessController@editEmployee');
+  Route::get('deleteEmployee/{id}', 'BusinessController@removeEmployee');
   //manage rewards
   Route::get('/manageRewards','BusinessController@showManageRewards');
   Route::get('/createReward', 'BusinessController@showCreateReward');
@@ -60,9 +66,16 @@ Route::middleware(['businessAdmin'])->group(function() {
   Route::get('/manageLocations', 'BusinessController@showManageLocations');
   Route::get('/createLocation', 'BusinessController@showCreateLocation');
   Route::post('/location-create', 'BusinessController@createLocation');
+  Route::get('/editLocation/{id}', 'BusinessController@showEditLocation');
+  Route::post('/edit-location/{id}', 'BusinessController@editLocation');
+  //manage Scanners
+  Route::get('/manageScanners','BusinessController@showManageScanners');
+  Route::get('/addScanner','BusinessController@showAddScanner');
+  Route::post('/add-scanner','BusinessController@addScanner');
 });
 
 Route::get('/manageScans', 'BusinessController@showManageScans');
+Route::get('/scan', 'ScannerController@newScan');
 
 //Admin Portal Routes
 Route::get('/scanner', function() {

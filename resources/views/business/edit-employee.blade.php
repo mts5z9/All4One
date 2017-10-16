@@ -43,59 +43,18 @@
                               @endif
                           </div>
                       </div>
-                      <div class="form-group{{ $errors->has('address1') ? ' has-error' : '' }}">
-                          <label for="address1" class="col-md-4 control-label">Address Line 1</label>
+                      <div class="form-group">
+                          <label for="location" class="col-md-4 control-label">Location</label>
                           <div class="col-md-6">
-                              <input id="address1" type="text" class="form-control" name="address1" value="{{$employee->address1}}" required autofocus>
-                              @if ($errors->has('address1'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('address1') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
-                      <div class="form-group{{ $errors->has('address2') ? ' has-error' : '' }}">
-                          <label for="address2" class="col-md-4 control-label">Address Line 2</label>
-                          <div class="col-md-6">
-                              <input id="address2" type="text" class="form-control" name="address2" value="{{$employee->address2}}" autofocus>
-                              @if ($errors->has('address2'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('address2') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
-                      <div class="form-group{{ $errors->has('city') ? ' has-error' : '' }}">
-                          <label for="city" class="col-md-4 control-label">City</label>
-                          <div class="col-md-6">
-                              <input id="city" type="text" class="form-control" name="city" value="{{$employee->city}}" required autofocus>
-                              @if ($errors->has('city'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('city') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
-                      <div class="form-group{{ $errors->has('state') ? ' has-error' : '' }}">
-                          <label for="state" class="col-md-4 control-label">State</label>
-                          <div class="col-md-6">
-                              <input id="state" type="text" class="form-control" name="state" value="{{$employee->state}}" required autofocus>
-                              @if ($errors->has('state'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('state') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
-                      <div class="form-group{{ $errors->has('postalCode') ? ' has-error' : '' }}">
-                          <label for="postalCode" class="col-md-4 control-label">Postal Code</label>
-                          <div class="col-md-6">
-                              <input id="postalCode" type="text" class="form-control" name="postalCode" value="{{$employee->postalCode}}" required autofocus>
-                              @if ($errors->has('postalCode'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('postalCode') }}</strong>
-                                  </span>
-                              @endif
+                            <select class="form-control" name="location" id="location">
+                              @foreach($locations as $location)
+                                @if($employee->address1 == $location->address1))
+                                  <option selected = "selected" value = "{{$location->locationID}}">{{$location->address1}}, {{$location->city}}, {{$location->state}}</option>
+                                @else
+                                  <option value = "{{$location->locationID}}">{{$location->address1}}, {{$location->city}}, {{$location->state}}</option>
+                                @endif
+                              @endforeach
+                            </select>
                           </div>
                       </div>
 

@@ -6,6 +6,7 @@ use all4one\User;
 use all4one\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\DB;
 
 class RegisterController extends Controller
 {
@@ -71,8 +72,9 @@ class RegisterController extends Controller
     {
         $role = 'patron';
         $status = 'actv';
+        $cardID = 'tempCardID';
         $data['email'] = strtolower($data['email']);
-        return User::create([
+        $user = User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
             'role' => $role,
@@ -86,5 +88,6 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'status' => $status,
         ]);
+        return $user;
     }
 }
