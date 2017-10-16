@@ -30,7 +30,7 @@
                         <td>{{$location->email}}</td>
                         <td>{{$location->phone}}</td>
                         <td>
-                          <button type="button" class="btn btn-info" name="redeem">Edit</button>
+                          <a href="/editLocation/{{$location->locationID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
                           <button type="button" class="btn btn-info" name="redeem">Delete</button>
                         </td>
                       </tr>

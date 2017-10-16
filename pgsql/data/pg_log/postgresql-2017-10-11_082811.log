@@ -1,0 +1,27 @@
+2017-10-11 08:28:12 CDT LOG:  database system was shut down at 2017-10-11 06:33:53 CDT
+2017-10-11 08:28:12 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-10-11 08:28:12 CDT LOG:  database system is ready to accept connections
+2017-10-11 08:28:12 CDT LOG:  autovacuum launcher started
+2017-10-11 19:39:49 CDT ERROR:  null value in column "cardID" violates not-null constraint
+2017-10-11 19:39:49 CDT DETAIL:  Failing row contains (patron4@ex.com                                                  ..., null, actv                ).
+2017-10-11 19:39:49 CDT STATEMENT:  insert into "ACCOUNT" ("patronEmail", "accountStatus") values ($1, $2)
+2017-10-11 19:42:25 CDT ERROR:  insert or update on table "ACCOUNT" violates foreign key constraint "fk-nfc_card-cardID"
+2017-10-11 19:42:25 CDT DETAIL:  Key (cardID)=(tempCardID          ) is not present in table "NFC_CARD".
+2017-10-11 19:42:25 CDT STATEMENT:  insert into "ACCOUNT" ("patronEmail", "accountStatus", "cardID") values ($1, $2, $3)
+2017-10-11 19:42:51 CDT ERROR:  insert or update on table "ACCOUNT" violates foreign key constraint "fk-account-patronEmail"
+2017-10-11 19:42:51 CDT DETAIL:  Key (patronEmail)=(patron4@ex.com                                                                                      ) is not present in table "USERS".
+2017-10-11 19:42:51 CDT STATEMENT:  insert into "ACCOUNT" ("patronEmail", "accountStatus", "cardID") values ($1, $2, $3)
+2017-10-11 19:43:36 CDT ERROR:  duplicate key value violates unique constraint "NFC_CARD_pkey"
+2017-10-11 19:43:36 CDT DETAIL:  Key ("cardID")=(tempCardID          ) already exists.
+2017-10-11 19:43:36 CDT STATEMENT:  insert into "NFC_CARD" ("cardID") values ($1)
+2017-10-11 19:48:32 CDT ERROR:  null value in column "patronEmail" violates not-null constraint
+2017-10-11 19:48:32 CDT DETAIL:  Failing row contains (null, card1               , actv                ).
+2017-10-11 19:48:32 CDT STATEMENT:  insert into "ACCOUNT" ("patronEmail", "accountStatus", "cardID") values ($1, $2, $3)
+2017-10-11 19:58:59 CDT ERROR:  update or delete on table "NFC_CARD" violates foreign key constraint "fk-nfc_card-cardID" on table "ACCOUNT"
+2017-10-11 19:58:59 CDT DETAIL:  Key (cardID)=(card2               ) is still referenced from table "ACCOUNT".
+2017-10-11 19:58:59 CDT STATEMENT:  update "NFC_CARD" set "cardID" = $1 where "cardID" = $2
+2017-10-11 19:59:34 CDT ERROR:  insert or update on table "ACCOUNT" violates foreign key constraint "fk-nfc_card-cardID"
+2017-10-11 19:59:34 CDT DETAIL:  Key (cardID)=(newcard4            ) is not present in table "NFC_CARD".
+2017-10-11 19:59:34 CDT STATEMENT:  update "ACCOUNT" set "cardID" = $1 where "cardID" = $2
+2017-10-11 23:30:44 CDT ERROR:  relation "USER" does not exist at character 8
+2017-10-11 23:30:44 CDT STATEMENT:  update "USER" set "password" = $1 where "email" = $2

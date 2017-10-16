@@ -33,7 +33,8 @@
           if($userRole == 'patron') {
             echo '<li><a href="/rewardHistory">Reward History</a></li>
                   <li><a href="/scanHistory">Scan History</a></li>
-                  <li><a href="/redeem">Redeem Rewards</a></li>';
+                  <li><a href="/redeem">Redeem Rewards</a></li>
+                  <li><a href="/participatingBusinesses">Participating Businesses</a></li>';
           }
         //business links
           if($userRole == 'employee'||$userRole == 'Owner'||$userRole == 'bAdmin') {
@@ -41,7 +42,8 @@
               if($userRole == 'bAdmin' || $userRole == 'Owner'){
                 echo '<li><a href="/manageRewards">Manage Rewards</a></li>
                       <li><a href="/manageEmployees">Manage Employees</a></li>
-                      <li><a href="/manageLocations">Manage Locations</a></li>';
+                      <li><a href="/manageLocations">Manage Locations</a></li>
+                      <li><a href="/manageScanners">Manage Scanners</a></li>';
               }
            }
         //admin links
@@ -60,6 +62,7 @@
                                    document.getElementById('logout-form').submit();">
                           Logout
                       </a>
+                      <a href="/changePassword">Change Password</a>
                       <a href="/editAccount/{{Auth::user()->id}}">Edit Account</a>
                             @if(Auth::user()->role == 'patron')
                               <a href="/registerCard">Register Card</a>
