@@ -21,7 +21,6 @@ class EmployeeRegisterController extends Controller
       $businessId = DB::table('EMPLOYEE')
         ->where('emplid', Auth::user()->email)
         ->value('businessID');
-
       $locations = DB::table('LOCATION')
         ->where('businessID', $businessId)
         ->select('locationID','address1','address2','city','state','postalCode','email','phone')
@@ -35,13 +34,6 @@ class EmployeeRegisterController extends Controller
         $this->create($request->all());
         return redirect('/manageEmployees');
     }
-    public function editEmployee(Request $request, $id)
-    {
-      $email = DB::table('USERS')->where('id',$id)->value('email');
-      $this->updateValidator($request->all(), $email)->validate();
-      $this->editCreate($request->all(), $id);
-      return redirect('/manageEmployees');
-    }
     public function modifyRole($id, $userRole) {
       if($userRole == 'employee') {
         $userRole = 'bAdmin';
@@ -53,12 +45,6 @@ class EmployeeRegisterController extends Controller
         ->update(['role' => $userRole]);
       return redirect('/manageEmployees');
     }
-    public function removeEmployee($id) {
-      DB::table('USERS')
-        ->where('id', $id)
-        ->delete();
-        return redirect('/manageEmployees');
-    }
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -68,23 +54,6 @@ class EmployeeRegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:USERS',
             'password' => 'required|string|min:6|confirmed',
         ]);
-    }
-    protected function updateValidator(array $data, $email)
-    {
-      if($data['email'] == $email){
-        return Validator::make($data, [
-            'firstName' => 'required|string|max:255',
-            'lastName' => 'required|string|max:255',
-            'phone' => 'required|string|max:10',
-            'email' => 'required|string|email|max:255',
-        ]);
-      }else
-          return Validator::make($data, [
-              'firstName' => 'required|string|max:255',
-              'lastName' => 'required|string|max:255',
-              'phone' => 'required|string|max:10',
-              'email' => 'required|string|email|max:255|unique:USERS',
-          ]);
     }
     protected function create(array $data)
     {
@@ -117,24 +86,8 @@ class EmployeeRegisterController extends Controller
               'empStatus' => 'actv',
               'locationID' => $location->locationID,
         ]);
-        
+
         return $user;
     }
-    protected function editCreate(array $data, $id)
-    {
-      DB::table('USERS')
-        ->where('id',$id)
-        ->update([
-                  'firstName'=>$data['firstName'],
-                  'lastName'=>$data['lastName'],
-                  'phone'=>$data['phone'],
-                  'address1'=>$data['address1'],
-                  'address2'=>$data['address2'],
-                  'city'=>$data['city'],
-                  'state'=>$data['state'],
-                  'postalCode'=>$data['postalCode'],
-                  'email' => $data['email'],
-                ]);
-        return;
-    }
+
 }

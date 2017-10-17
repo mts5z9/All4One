@@ -19,3 +19,8 @@
 	
 2017-10-09 23:33:47 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
 	
+2017-10-10 02:26:58 CDT ERROR:  null value in column "businessID" violates not-null constraint
+2017-10-10 02:26:58 CDT DETAIL:  Failing row contains (null, 7, 4239 Crow Street                                                ..., null, Columbia                                                        ..., Mo, 94832, exloc@gmail.com                                                 ..., 3949399333, actv      ).
+2017-10-10 02:26:58 CDT STATEMENT:  insert into "LOCATION" ("address1", "address2", "city", "state", "postalCode", "email", "phone", "businessID", "locationStatus") values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+2017-10-10 02:28:39 CDT ERROR:  value too long for type character(10)
+2017-10-10 02:28:39 CDT STATEMENT:  insert into "BUSINESS" ("businessName", "category", "busDescr", "businessEmail", "phone") values ($1, $2, $3, $4, $5) returning "businessID"

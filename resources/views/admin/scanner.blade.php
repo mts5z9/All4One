@@ -53,6 +53,7 @@
     </div>
 
 </div>
+<a href="/scan" class="btn btn-info pull-left" style="margin-right: 3px;">Scan</a>
 <script type="text/javascript">
   $( ".draggabble" ).on( "dragstop", function( event, ui ) {} );
 </script>

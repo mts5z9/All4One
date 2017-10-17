@@ -12,18 +12,20 @@
                       <th>Name</th>
                       <th>Email</th>
                       <th>User Type</th>
-                      <th style="width: 30%">buttons</th>
+                      <th style="width: 30%"></th>
                     </tr>
                     <!--populate from database -->
                     <tbody>
                       @foreach ($employees as $employee)
                       <tr>
-                        <td>{{$employee->firstName}}{{$employee->lastName}}</td>
+                        <td>{{$employee->firstName}} {{$employee->lastName}}</td>
                         <td>{{$employee->email}}</td>
-                        <td>{{$employee->role}}</td>
+                        @if($employee->role == 'employee')<td>Employee</td>
+                        @elseif($employee->role == 'bAdmin')<td>Business Admin</td>
+                        @elseif($employee->role == 'Owner')<td>Business Owner</td>@endif
                         <td>
-                          <a href="/editEmployee/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-                          <a href="/deleteEmployee/{{$employee->id}}" target="_blank" data-toggle="confirmation" data-title="Delete Employee?" type="button" class="btn btn-info" name="remove">Remove</a>
+                          @if($employee->role != 'Owner')<a href="/editEmployee/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                          <a href="/deleteEmployee/{{$employee->id}}" target="_blank" data-toggle="confirmation" data-title="Delete Employee?" type="button" class="btn btn-info" name="remove">Remove</a>@endif
                           @if($employee->role == 'employee' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="type">Grant Admin</a>
                           @elseif($employee->role == 'bAdmin' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="revoke">Revoke Admin</a>@endif
                         </td>

@@ -84,5 +84,21 @@ class UserController extends Controller
                 ]);
         return;
     }
+    public function showChangePassword()
+    {
+      return view('change-password');
+    }
+    protected function changePassword(Request $request)
+    {
+      $this->validatePassword($request->all())->validate();
+      DB::table('USERS')
+        ->where('email', Auth::user()->email)
+        ->update(['password' => bcrypt($request['password'])]);
+      return redirect('/portalDirect');
+    }
+    protected function validatePassword(array $data)
+    {
+      return Validator::make($data, ['password' => 'required|string|min:6|confirmed']);
+    }
 
 }
