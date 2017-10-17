@@ -1,0 +1,26 @@
+2017-10-17 07:49:45 CDT ERROR:  syntax error at or near "oldTotal" at character 820
+2017-10-17 07:49:45 CDT STATEMENT:  CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    NOT LEAKPROOF 
+	AS $BODY$
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) in oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;

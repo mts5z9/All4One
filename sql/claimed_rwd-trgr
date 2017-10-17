@@ -1,0 +1,30 @@
+-- FUNCTION: public."claimed_rwd-dec-trg_func"()
+
+-- DROP FUNCTION public."claimed_rwd-dec-trg_func"();
+
+CREATE FUNCTION public."claimed_rwd-dec-trg_func"()
+    RETURNS trigger
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE NOT LEAKPROOF 
+    ROWS 0
+AS $BODY$
+DECLARE
+	bid integer;
+    maxDt timestamp;
+    oldTotal integer;
+    pointsNeeded integer;
+BEGIN
+	select "businessID" from "REWARD" where "rewardID" = new."rewardID" into bid;
+    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	select "pointsNeeded" from "REWARD" where "rewardID" = new."rewardID" into pointsNeeded;
+	select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid AND "dateTime" = maxDt into oldTotal;
+    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'reward', oldTotal - pointsNeeded );
+	RETURN null;
+END
+    
+
+$BODY$;
+
+ALTER FUNCTION public."claimed_rwd-dec-trg_func"()
+    OWNER TO postgres;
