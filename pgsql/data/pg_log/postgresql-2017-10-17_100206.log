@@ -1,0 +1,314 @@
+2017-10-17 10:02:07 CDT LOG:  database system was interrupted; last known up at 2017-10-16 17:42:14 CDT
+2017-10-17 10:02:07 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:08 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:09 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:10 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:11 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:12 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:13 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:14 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:15 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:16 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:17 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:18 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:19 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:20 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:21 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:22 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:23 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:24 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:25 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:26 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:28 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:29 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:30 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:31 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:32 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:33 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:34 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:35 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:36 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:37 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:38 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:39 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:40 CDT LOG:  database system was not properly shut down; automatic recovery in progress
+2017-10-17 10:02:40 CDT LOG:  invalid record length at 0/1A2ABC8: wanted 24, got 0
+2017-10-17 10:02:40 CDT LOG:  redo is not required
+2017-10-17 10:02:40 CDT FATAL:  the database system is starting up
+2017-10-17 10:02:40 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-10-17 10:02:40 CDT LOG:  autovacuum launcher started
+2017-10-17 10:02:40 CDT LOG:  database system is ready to accept connections
+2017-10-17 13:56:54 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 57
+2017-10-17 13:56:54 CDT STATEMENT:  
+	SELECT
+	    db.oid as did, db.datname, db.datallowconn, pg_encoding_to_char(db.encoding) AS serverencoding,
+	    has_database_privilege(db.oid, 'CREATE') as cancreate, datlastsysoid
+	FROM
+	    pg_database db
+	WHERE db.datname = current_database()
+2017-10-17 13:57:00 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 13:57:00 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 13:57:04 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 13:57:04 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 13:57:06 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 13:57:06 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 13:57:08 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 13:57:08 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 13:57:18 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 13:57:18 CDT STATEMENT:      SELECT
+	        ca.oid,
+	        concat(format_type(st.oid,NULL),'->',format_type(tt.oid,tt.typtypmod)) as name
+	    FROM pg_cast ca
+	    JOIN pg_type st ON st.oid=castsource
+	    JOIN pg_namespace ns ON ns.oid=st.typnamespace
+	    JOIN pg_type tt ON tt.oid=casttarget
+	    JOIN pg_namespace nt ON nt.oid=tt.typnamespace
+	    LEFT JOIN pg_proc pr ON pr.oid=castfunc
+	    LEFT JOIN pg_namespace np ON np.oid=pr.pronamespace
+	    LEFT OUTER JOIN pg_description des ON (des.objoid=ca.oid AND des.objsubid=0 AND des.classoid='pg_cast'::regclass)
+	                                WHERE
+	                ca.oid > 12400::OID
+	        ORDER BY st.typname, tt.typname
+2017-10-17 13:57:20 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 13:57:20 CDT STATEMENT:  SELECT
+	    CASE
+	    WHEN (nspname LIKE E'pg\\_temp\\_%') THEN 1
+	    WHEN (nspname LIKE E'pg\\_%') THEN 0
+	    ELSE 3 END AS nsptyp,
+	    nsp.nspname AS name,
+	    nsp.oid,
+	    array_to_string(nsp.nspacl::text[], ', ') as acl,
+	    r.rolname AS namespaceowner, description,
+	    has_schema_privilege(nsp.oid, 'CREATE') AS can_create,
+	    CASE
+	    WHEN nspname LIKE E'pg\\_%' THEN true
+	    ELSE false END AS is_sys_object,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'r' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS tblacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'S' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS seqacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'f' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS funcacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'T' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS typeacl,
+	    (SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=nsp.oid) AS seclabels
+	FROM
+	    pg_namespace nsp
+	    LEFT OUTER JOIN pg_description des ON
+	        (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)
+	    LEFT JOIN pg_roles r ON (r.oid = nsp.nspowner)
+	WHERE
+	                NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY 1, nspname;
+2017-10-17 13:57:27 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 13:57:27 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 13:57:28 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 13:57:28 CDT STATEMENT:  SELECT
+	    lan.oid as oid, lanname as name, lanpltrusted as trusted,
+	    array_to_string(lanacl::text[], ', ') as acl, hp.proname as lanproc,
+	    vp.proname as lanval, description,
+	    pg_get_userbyid(lan.lanowner) as lanowner, ip.proname as laninl,
+	    (SELECT array_agg(provider || '=' || label) FROM pg_seclabel sl1 WHERE sl1.objoid=lan.oid) AS seclabels
+	FROM
+	    pg_language lan JOIN pg_proc hp ON hp.oid=lanplcallfoid
+	    LEFT OUTER JOIN pg_proc ip ON ip.oid=laninline
+	    LEFT OUTER JOIN pg_proc vp ON vp.oid=lanvalidator
+	    LEFT OUTER JOIN pg_description des
+	        ON (
+	            des.objoid=lan.oid AND des.objsubid=0 AND
+	            des.classoid='pg_language'::regclass
+	        )
+	WHERE lanispl IS TRUE
+	ORDER BY lanname
+2017-10-17 14:05:57 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-17 14:05:57 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-17 14:06:00 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 14:06:00 CDT STATEMENT:  SELECT
+	    lan.oid as oid, lanname as name, lanpltrusted as trusted,
+	    array_to_string(lanacl::text[], ', ') as acl, hp.proname as lanproc,
+	    vp.proname as lanval, description,
+	    pg_get_userbyid(lan.lanowner) as lanowner, ip.proname as laninl,
+	    (SELECT array_agg(provider || '=' || label) FROM pg_seclabel sl1 WHERE sl1.objoid=lan.oid) AS seclabels
+	FROM
+	    pg_language lan JOIN pg_proc hp ON hp.oid=lanplcallfoid
+	    LEFT OUTER JOIN pg_proc ip ON ip.oid=laninline
+	    LEFT OUTER JOIN pg_proc vp ON vp.oid=lanvalidator
+	    LEFT OUTER JOIN pg_description des
+	        ON (
+	            des.objoid=lan.oid AND des.objsubid=0 AND
+	            des.classoid='pg_language'::regclass
+	        )
+	WHERE lanispl IS TRUE
+	ORDER BY lanname
+2017-10-17 14:06:01 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 14:06:01 CDT STATEMENT:  SELECT fdw.oid as fdwoid, fdwname as name, fdwhandler, fdwvalidator, description,
+	    array_to_string(fdwoptions, ',') AS fdwoptions, pg_get_userbyid(fdwowner) as fdwowner, array_to_string(fdwacl::text[], ', ') as acl,
+	    quote_ident(vp_nsp.nspname)||'.'||quote_ident(vp.proname) AS fdwvalue,
+	    quote_ident(vh_nsp.nspname)||'.'||quote_ident(vh.proname) AS fdwhan
+	FROM pg_foreign_data_wrapper fdw
+	    LEFT OUTER JOIN pg_proc vh on vh.oid=fdwhandler
+	    LEFT OUTER JOIN pg_proc vp on vp.oid=fdwvalidator
+	    LEFT OUTER JOIN pg_namespace vh_nsp ON vh_nsp.oid=vh.pronamespace
+	    LEFT OUTER JOIN pg_namespace vp_nsp ON vp_nsp.oid=vp.pronamespace
+	    LEFT OUTER JOIN pg_description des ON (des.objoid=fdw.oid AND des.objsubid=0 AND des.classoid='pg_foreign_data_wrapper'::regclass)
+	ORDER BY fdwname
+2017-10-17 14:06:02 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-17 14:06:02 CDT STATEMENT:  SELECT
+	    x.oid AS eid, pg_get_userbyid(extowner) AS owner,
+	    x.extname AS name, n.nspname AS schema,
+	    x.extrelocatable AS relocatable, x.extversion AS version,
+	    e.comment
+	FROM
+	    pg_extension x
+	    LEFT JOIN pg_namespace n ON x.extnamespace=n.oid
+	    JOIN pg_available_extensions() e(name, default_version, comment) ON x.extname=e.name ORDER BY x.extname
+	
+2017-10-17 14:06:18 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-17 14:06:18 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-18 06:50:33 CDT LOG:  received fast shutdown request
+2017-10-18 06:50:33 CDT LOG:  aborting any active transactions
+2017-10-18 06:50:33 CDT LOG:  autovacuum launcher shutting down

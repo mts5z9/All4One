@@ -1,0 +1,1092 @@
+2017-10-18 09:14:08 CDT FATAL:  the database system is starting up
+2017-10-18 09:14:08 CDT LOG:  database system was shut down at 2017-10-18 09:02:17 CDT
+2017-10-18 09:14:09 CDT FATAL:  the database system is starting up
+2017-10-18 09:14:10 CDT LOG:  MultiXact member wraparound protections are now enabled
+2017-10-18 09:14:10 CDT LOG:  database system is ready to accept connections
+2017-10-18 09:14:10 CDT LOG:  autovacuum launcher started
+2017-10-18 09:18:38 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 57
+2017-10-18 09:18:38 CDT STATEMENT:  
+	SELECT
+	    db.oid as did, db.datname, db.datallowconn, pg_encoding_to_char(db.encoding) AS serverencoding,
+	    has_database_privilege(db.oid, 'CREATE') as cancreate, datlastsysoid
+	FROM
+	    pg_database db
+	WHERE db.datname = current_database()
+2017-10-18 09:18:40 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:18:40 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:18:42 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-18 09:18:42 CDT STATEMENT:  SELECT
+	    CASE
+	    WHEN (nspname LIKE E'pg\\_temp\\_%') THEN 1
+	    WHEN (nspname LIKE E'pg\\_%') THEN 0
+	    ELSE 3 END AS nsptyp,
+	    nsp.nspname AS name,
+	    nsp.oid,
+	    array_to_string(nsp.nspacl::text[], ', ') as acl,
+	    r.rolname AS namespaceowner, description,
+	    has_schema_privilege(nsp.oid, 'CREATE') AS can_create,
+	    CASE
+	    WHEN nspname LIKE E'pg\\_%' THEN true
+	    ELSE false END AS is_sys_object,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'r' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS tblacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'S' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS seqacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'f' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS funcacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'T' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS typeacl,
+	    (SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=nsp.oid) AS seclabels
+	FROM
+	    pg_namespace nsp
+	    LEFT OUTER JOIN pg_description des ON
+	        (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)
+	    LEFT JOIN pg_roles r ON (r.oid = nsp.nspowner)
+	WHERE
+	                NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY 1, nspname;
+2017-10-18 09:27:32 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:27:32 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:27:36 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:27:36 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:27:38 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:27:38 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:27:47 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:27:47 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:27:49 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:27:49 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:27:52 CDT ERROR:  could not open file "base/16393/2690": No such file or directory
+2017-10-18 09:27:52 CDT STATEMENT:  SELECT e.oid, e.xmin, e.evtname AS name, upper(e.evtevent) AS eventname,
+	pg_catalog.pg_get_userbyid(e.evtowner) AS eventowner,
+	e.evtenabled AS enabled,
+	e.evtfoid AS eventfuncoid,
+	CASE
+	  WHEN n.nspname = 'public'
+	  THEN quote_ident(n.nspname) || '.' || cast(e.evtfoid::regproc as text)
+	  ELSE cast(e.evtfoid::regproc as text)
+	END AS  eventfunname,
+	array_to_string(array(select quote_literal(x) from unnest(evttags) as t(x)), ', ') AS when,
+	 pg_catalog.obj_description(e.oid, 'pg_event_trigger') AS comment,
+	 (SELECT array_agg(provider || '=' || label) FROM pg_seclabel sl1 WHERE sl1.objoid=e.oid) AS seclabels,
+	 p.prosrc AS source, p.pronamespace AS schemaoid, l.lanname AS language
+	 FROM pg_event_trigger e
+	 LEFT OUTER JOIN pg_proc p ON p.oid=e.evtfoid
+	 LEFT OUTER JOIN pg_language l ON l.oid=p.prolang,
+	 pg_namespace n
+	 WHERE p.pronamespace = n.oid
+	  ORDER BY e.evtname
+2017-10-18 09:32:09 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 50
+2017-10-18 09:32:09 CDT STATEMENT:  SELECT
+	    nsp.oid,
+	    nsp.nspname as name,
+	    has_schema_privilege(nsp.oid, 'CREATE') as can_create,
+	    has_schema_privilege(nsp.oid, 'USAGE') as has_usage
+	FROM
+	    pg_namespace nsp
+	WHERE
+	            nspname NOT LIKE E'pg\_%' AND
+	            NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY nspname;
+2017-10-18 09:32:10 CDT ERROR:  could not open file "base/16393/2691": No such file or directory at character 174
+2017-10-18 09:32:10 CDT STATEMENT:  SELECT
+	    CASE
+	    WHEN (nspname LIKE E'pg\\_temp\\_%') THEN 1
+	    WHEN (nspname LIKE E'pg\\_%') THEN 0
+	    ELSE 3 END AS nsptyp,
+	    nsp.nspname AS name,
+	    nsp.oid,
+	    array_to_string(nsp.nspacl::text[], ', ') as acl,
+	    r.rolname AS namespaceowner, description,
+	    has_schema_privilege(nsp.oid, 'CREATE') AS can_create,
+	    CASE
+	    WHEN nspname LIKE E'pg\\_%' THEN true
+	    ELSE false END AS is_sys_object,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'r' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS tblacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'S' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS seqacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'f' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS funcacl,
+	        (SELECT array_to_string(ARRAY(
+	        SELECT array_to_string(defaclacl::text[], ', ')
+	            FROM pg_default_acl
+	        WHERE defaclobjtype = 'T' AND defaclnamespace = nsp.oid
+	    ), ', ')) AS typeacl,
+	    (SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=nsp.oid) AS seclabels
+	FROM
+	    pg_namespace nsp
+	    LEFT OUTER JOIN pg_description des ON
+	        (des.objoid=nsp.oid AND des.classoid='pg_namespace'::regclass)
+	    LEFT JOIN pg_roles r ON (r.oid = nsp.nspowner)
+	WHERE
+	                NOT (
+	(nsp.nspname = 'pg_catalog' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pg_class' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'pgagent' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'pga_job' AND
+	            relnamespace = nsp.oid LIMIT 1)) OR
+	    (nsp.nspname = 'information_schema' AND EXISTS
+	        (SELECT 1 FROM pg_class WHERE relname = 'tables' AND
+	            relnamespace = nsp.oid LIMIT 1))
+	    )
+	ORDER BY 1, nspname;
+2017-10-18 09:34:01 CDT ERROR:  could not open file "base/16393/2620": No such file or directory
+2017-10-18 09:34:01 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:34:04 CDT ERROR:  could not open file "base/16393/2620": No such file or directory
+2017-10-18 09:34:04 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name, rel.reltablespace AS spcoid,rel.relacl AS relacl_str,
+	  (CASE WHEN length(spc.spcname) > 0 THEN spc.spcname ELSE
+	    (SELECT sp.spcname FROM pg_database dtb
+	    JOIN pg_tablespace sp ON dtb.dattablespace=sp.oid
+	    WHERE dtb.oid = 16393::oid)
+	  END) as spcname,
+	  (select nspname FROM pg_namespace WHERE oid = 2200::oid ) as schema,
+	  pg_get_userbyid(rel.relowner) AS relowner, rel.relhasoids,
+	  rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,
+		EXISTS(select 1 FROM pg_trigger
+				JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'
+				JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'
+				WHERE tgrelid=rel.oid) AS isrepl,
+		(SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+		(SELECT ARRAY(SELECT CASE WHEN (nspname NOT LIKE E'pg\_%') THEN
+	            quote_ident(nspname)||'.'||quote_ident(c.relname)
+	            ELSE quote_ident(c.relname) END AS inherited_tables
+	    FROM pg_inherits i
+	    JOIN pg_class c ON c.oid = i.inhparent
+	    JOIN pg_namespace n ON n.oid=c.relnamespace
+	    WHERE i.inhrelid = rel.oid ORDER BY inhseqno)) AS coll_inherits,
+	  (SELECT count(*)
+			FROM pg_inherits i
+	      JOIN pg_class c ON c.oid = i.inhparent
+	      JOIN pg_namespace n ON n.oid=c.relnamespace
+			WHERE i.inhrelid = rel.oid) AS inherited_tables_cnt,
+		(CASE WHEN rel.relpersistence = 'u' THEN true ELSE false END) AS relpersistence,
+		substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor,
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') = 'true')
+		  THEN true ELSE false END) AS autovacuum_enabled,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') =  'true')
+		  THEN true ELSE false END) AS toast_autovacuum_enabled,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age,
+		array_to_string(rel.reloptions, ',') AS table_vacuum_settings_str,
+		array_to_string(tst.reloptions, ',') AS toast_table_vacuum_settings_str,
+		rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions, rel.reloftype,
+		CASE WHEN typ.typname IS NOT NULL THEN (select quote_ident(nspname) FROM pg_namespace WHERE oid = 2200::oid )||'.'||quote_ident(typ.typname) ELSE typ.typname END AS typname,
+		(CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable,
+	    -- Added for pgAdmin4
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  THEN true ELSE false END) AS autovacuum_custom,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  AND rel.reltoastrelid != 0 THEN true ELSE false END) AS toast_autovacuum,
+	
+		(SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS seclabels,
+		(CASE WHEN rel.oid <= 12400::oid THEN true ElSE false END) AS is_sys_table
+	FROM pg_class rel
+	  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace
+	  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)
+	  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'
+	  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid
+	  LEFT JOIN pg_type typ ON rel.reloftype=typ.oid
+	WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	ORDER BY rel.relname;
+2017-10-18 09:35:13 CDT ERROR:  could not open file "base/16393/2620": No such file or directory
+2017-10-18 09:35:13 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:35:36 CDT ERROR:  could not open file "base/16393/2620": No such file or directory
+2017-10-18 09:35:36 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:35:48 CDT ERROR:  could not open file "base/16393/2620": No such file or directory
+2017-10-18 09:35:48 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name, rel.reltablespace AS spcoid,rel.relacl AS relacl_str,
+	  (CASE WHEN length(spc.spcname) > 0 THEN spc.spcname ELSE
+	    (SELECT sp.spcname FROM pg_database dtb
+	    JOIN pg_tablespace sp ON dtb.dattablespace=sp.oid
+	    WHERE dtb.oid = 16393::oid)
+	  END) as spcname,
+	  (select nspname FROM pg_namespace WHERE oid = 2200::oid ) as schema,
+	  pg_get_userbyid(rel.relowner) AS relowner, rel.relhasoids,
+	  rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,
+		EXISTS(select 1 FROM pg_trigger
+				JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'
+				JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'
+				WHERE tgrelid=rel.oid) AS isrepl,
+		(SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+		(SELECT ARRAY(SELECT CASE WHEN (nspname NOT LIKE E'pg\_%') THEN
+	            quote_ident(nspname)||'.'||quote_ident(c.relname)
+	            ELSE quote_ident(c.relname) END AS inherited_tables
+	    FROM pg_inherits i
+	    JOIN pg_class c ON c.oid = i.inhparent
+	    JOIN pg_namespace n ON n.oid=c.relnamespace
+	    WHERE i.inhrelid = rel.oid ORDER BY inhseqno)) AS coll_inherits,
+	  (SELECT count(*)
+			FROM pg_inherits i
+	      JOIN pg_class c ON c.oid = i.inhparent
+	      JOIN pg_namespace n ON n.oid=c.relnamespace
+			WHERE i.inhrelid = rel.oid) AS inherited_tables_cnt,
+		(CASE WHEN rel.relpersistence = 'u' THEN true ELSE false END) AS relpersistence,
+		substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor,
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') = 'true')
+		  THEN true ELSE false END) AS autovacuum_enabled,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') =  'true')
+		  THEN true ELSE false END) AS toast_autovacuum_enabled,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age,
+		array_to_string(rel.reloptions, ',') AS table_vacuum_settings_str,
+		array_to_string(tst.reloptions, ',') AS toast_table_vacuum_settings_str,
+		rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions, rel.reloftype,
+		CASE WHEN typ.typname IS NOT NULL THEN (select quote_ident(nspname) FROM pg_namespace WHERE oid = 2200::oid )||'.'||quote_ident(typ.typname) ELSE typ.typname END AS typname,
+		(CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable,
+	    -- Added for pgAdmin4
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  THEN true ELSE false END) AS autovacuum_custom,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  AND rel.reltoastrelid != 0 THEN true ELSE false END) AS toast_autovacuum,
+	
+		(SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS seclabels,
+		(CASE WHEN rel.oid <= 12400::oid THEN true ElSE false END) AS is_sys_table
+	FROM pg_class rel
+	  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace
+	  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)
+	  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'
+	  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid
+	  LEFT JOIN pg_type typ ON rel.reloftype=typ.oid
+	WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	ORDER BY rel.relname;
+2017-10-18 09:37:58 CDT ERROR:  could not open file "base/16393/2699": No such file or directory
+2017-10-18 09:37:58 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:38:04 CDT ERROR:  could not open file "base/16393/2699": No such file or directory
+2017-10-18 09:38:04 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:38:07 CDT ERROR:  could not open file "base/16393/2699": No such file or directory
+2017-10-18 09:38:07 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:38:15 CDT ERROR:  could not open file "base/16393/2699": No such file or directory
+2017-10-18 09:38:15 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name, rel.reltablespace AS spcoid,rel.relacl AS relacl_str,
+	  (CASE WHEN length(spc.spcname) > 0 THEN spc.spcname ELSE
+	    (SELECT sp.spcname FROM pg_database dtb
+	    JOIN pg_tablespace sp ON dtb.dattablespace=sp.oid
+	    WHERE dtb.oid = 16393::oid)
+	  END) as spcname,
+	  (select nspname FROM pg_namespace WHERE oid = 2200::oid ) as schema,
+	  pg_get_userbyid(rel.relowner) AS relowner, rel.relhasoids,
+	  rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,
+		EXISTS(select 1 FROM pg_trigger
+				JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'
+				JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'
+				WHERE tgrelid=rel.oid) AS isrepl,
+		(SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+		(SELECT ARRAY(SELECT CASE WHEN (nspname NOT LIKE E'pg\_%') THEN
+	            quote_ident(nspname)||'.'||quote_ident(c.relname)
+	            ELSE quote_ident(c.relname) END AS inherited_tables
+	    FROM pg_inherits i
+	    JOIN pg_class c ON c.oid = i.inhparent
+	    JOIN pg_namespace n ON n.oid=c.relnamespace
+	    WHERE i.inhrelid = rel.oid ORDER BY inhseqno)) AS coll_inherits,
+	  (SELECT count(*)
+			FROM pg_inherits i
+	      JOIN pg_class c ON c.oid = i.inhparent
+	      JOIN pg_namespace n ON n.oid=c.relnamespace
+			WHERE i.inhrelid = rel.oid) AS inherited_tables_cnt,
+		(CASE WHEN rel.relpersistence = 'u' THEN true ELSE false END) AS relpersistence,
+		substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor,
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') = 'true')
+		  THEN true ELSE false END) AS autovacuum_enabled,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') =  'true')
+		  THEN true ELSE false END) AS toast_autovacuum_enabled,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age,
+		array_to_string(rel.reloptions, ',') AS table_vacuum_settings_str,
+		array_to_string(tst.reloptions, ',') AS toast_table_vacuum_settings_str,
+		rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions, rel.reloftype,
+		CASE WHEN typ.typname IS NOT NULL THEN (select quote_ident(nspname) FROM pg_namespace WHERE oid = 2200::oid )||'.'||quote_ident(typ.typname) ELSE typ.typname END AS typname,
+		(CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable,
+	    -- Added for pgAdmin4
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  THEN true ELSE false END) AS autovacuum_custom,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  AND rel.reltoastrelid != 0 THEN true ELSE false END) AS toast_autovacuum,
+	
+		(SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS seclabels,
+		(CASE WHEN rel.oid <= 12400::oid THEN true ElSE false END) AS is_sys_table
+	FROM pg_class rel
+	  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace
+	  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)
+	  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'
+	  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid
+	  LEFT JOIN pg_type typ ON rel.reloftype=typ.oid
+	WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	ORDER BY rel.relname;
+2017-10-18 09:39:27 CDT ERROR:  could not open file "base/16393/2701": No such file or directory
+2017-10-18 09:39:27 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:39:39 CDT ERROR:  could not open file "base/16393/2701": No such file or directory
+2017-10-18 09:39:39 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:40:06 CDT ERROR:  could not open file "base/16393/2701": No such file or directory
+2017-10-18 09:40:06 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:40:12 CDT ERROR:  could not open file "base/16393/2701": No such file or directory
+2017-10-18 09:40:12 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:40:16 CDT ERROR:  could not open file "base/16393/2701": No such file or directory
+2017-10-18 09:40:16 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name, rel.reltablespace AS spcoid,rel.relacl AS relacl_str,
+	  (CASE WHEN length(spc.spcname) > 0 THEN spc.spcname ELSE
+	    (SELECT sp.spcname FROM pg_database dtb
+	    JOIN pg_tablespace sp ON dtb.dattablespace=sp.oid
+	    WHERE dtb.oid = 16393::oid)
+	  END) as spcname,
+	  (select nspname FROM pg_namespace WHERE oid = 2200::oid ) as schema,
+	  pg_get_userbyid(rel.relowner) AS relowner, rel.relhasoids,
+	  rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,
+		EXISTS(select 1 FROM pg_trigger
+				JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'
+				JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'
+				WHERE tgrelid=rel.oid) AS isrepl,
+		(SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+		(SELECT ARRAY(SELECT CASE WHEN (nspname NOT LIKE E'pg\_%') THEN
+	            quote_ident(nspname)||'.'||quote_ident(c.relname)
+	            ELSE quote_ident(c.relname) END AS inherited_tables
+	    FROM pg_inherits i
+	    JOIN pg_class c ON c.oid = i.inhparent
+	    JOIN pg_namespace n ON n.oid=c.relnamespace
+	    WHERE i.inhrelid = rel.oid ORDER BY inhseqno)) AS coll_inherits,
+	  (SELECT count(*)
+			FROM pg_inherits i
+	      JOIN pg_class c ON c.oid = i.inhparent
+	      JOIN pg_namespace n ON n.oid=c.relnamespace
+			WHERE i.inhrelid = rel.oid) AS inherited_tables_cnt,
+		(CASE WHEN rel.relpersistence = 'u' THEN true ELSE false END) AS relpersistence,
+		substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor,
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') = 'true')
+		  THEN true ELSE false END) AS autovacuum_enabled,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') =  'true')
+		  THEN true ELSE false END) AS toast_autovacuum_enabled,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age,
+		array_to_string(rel.reloptions, ',') AS table_vacuum_settings_str,
+		array_to_string(tst.reloptions, ',') AS toast_table_vacuum_settings_str,
+		rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions, rel.reloftype,
+		CASE WHEN typ.typname IS NOT NULL THEN (select quote_ident(nspname) FROM pg_namespace WHERE oid = 2200::oid )||'.'||quote_ident(typ.typname) ELSE typ.typname END AS typname,
+		(CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable,
+	    -- Added for pgAdmin4
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  THEN true ELSE false END) AS autovacuum_custom,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  AND rel.reltoastrelid != 0 THEN true ELSE false END) AS toast_autovacuum,
+	
+		(SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS seclabels,
+		(CASE WHEN rel.oid <= 12400::oid THEN true ElSE false END) AS is_sys_table
+	FROM pg_class rel
+	  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace
+	  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)
+	  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'
+	  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid
+	  LEFT JOIN pg_type typ ON rel.reloftype=typ.oid
+	WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	ORDER BY rel.relname;
+2017-10-18 09:49:00 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:00 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:16 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:16 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:18 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:18 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:19 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:19 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:28 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:28 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:41 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:41 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:44 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:44 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:52 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:52 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:52 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:52 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:53 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:53 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:49:59 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:49:59 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:50:10 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:50:10 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:50:16 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:50:16 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:50:47 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:50:47 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+	    (SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE AND tgenabled = 'O') AS has_enable_triggers
+	FROM pg_class rel
+	    WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	        ORDER BY rel.relname;
+2017-10-18 09:50:54 CDT ERROR:  could not open file "base/16393/2702": No such file or directory
+2017-10-18 09:50:54 CDT STATEMENT:  SELECT rel.oid, rel.relname AS name, rel.reltablespace AS spcoid,rel.relacl AS relacl_str,
+	  (CASE WHEN length(spc.spcname) > 0 THEN spc.spcname ELSE
+	    (SELECT sp.spcname FROM pg_database dtb
+	    JOIN pg_tablespace sp ON dtb.dattablespace=sp.oid
+	    WHERE dtb.oid = 16393::oid)
+	  END) as spcname,
+	  (select nspname FROM pg_namespace WHERE oid = 2200::oid ) as schema,
+	  pg_get_userbyid(rel.relowner) AS relowner, rel.relhasoids,
+	  rel.relhassubclass, rel.reltuples, des.description, con.conname, con.conkey,
+		EXISTS(select 1 FROM pg_trigger
+				JOIN pg_proc pt ON pt.oid=tgfoid AND pt.proname='logtrigger'
+				JOIN pg_proc pc ON pc.pronamespace=pt.pronamespace AND pc.proname='slonyversion'
+				WHERE tgrelid=rel.oid) AS isrepl,
+		(SELECT count(*) FROM pg_trigger WHERE tgrelid=rel.oid AND tgisinternal = FALSE) AS triggercount,
+		(SELECT ARRAY(SELECT CASE WHEN (nspname NOT LIKE E'pg\_%') THEN
+	            quote_ident(nspname)||'.'||quote_ident(c.relname)
+	            ELSE quote_ident(c.relname) END AS inherited_tables
+	    FROM pg_inherits i
+	    JOIN pg_class c ON c.oid = i.inhparent
+	    JOIN pg_namespace n ON n.oid=c.relnamespace
+	    WHERE i.inhrelid = rel.oid ORDER BY inhseqno)) AS coll_inherits,
+	  (SELECT count(*)
+			FROM pg_inherits i
+	      JOIN pg_class c ON c.oid = i.inhparent
+	      JOIN pg_namespace n ON n.oid=c.relnamespace
+			WHERE i.inhrelid = rel.oid) AS inherited_tables_cnt,
+		(CASE WHEN rel.relpersistence = 'u' THEN true ELSE false END) AS relpersistence,
+		substring(array_to_string(rel.reloptions, ',') FROM 'fillfactor=([0-9]*)') AS fillfactor,
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') = 'true')
+		  THEN true ELSE false END) AS autovacuum_enabled,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS autovacuum_vacuum_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_vacuum_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS autovacuum_analyze_threshold,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS autovacuum_analyze_scale_factor,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS autovacuum_vacuum_cost_delay,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS autovacuum_vacuum_cost_limit,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS autovacuum_freeze_min_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS autovacuum_freeze_max_age,
+		substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS autovacuum_freeze_table_age,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)') =  'true')
+		  THEN true ELSE false END) AS toast_autovacuum_enabled,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_threshold=([0-9]*)') AS toast_autovacuum_vacuum_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_vacuum_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_threshold=([0-9]*)') AS toast_autovacuum_analyze_threshold,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_analyze_scale_factor=([0-9]*[.][0-9]*)') AS toast_autovacuum_analyze_scale_factor,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_delay=([0-9]*)') AS toast_autovacuum_vacuum_cost_delay,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_vacuum_cost_limit=([0-9]*)') AS toast_autovacuum_vacuum_cost_limit,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_min_age=([0-9]*)') AS toast_autovacuum_freeze_min_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_max_age=([0-9]*)') AS toast_autovacuum_freeze_max_age,
+		substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_freeze_table_age=([0-9]*)') AS toast_autovacuum_freeze_table_age,
+		array_to_string(rel.reloptions, ',') AS table_vacuum_settings_str,
+		array_to_string(tst.reloptions, ',') AS toast_table_vacuum_settings_str,
+		rel.reloptions AS reloptions, tst.reloptions AS toast_reloptions, rel.reloftype,
+		CASE WHEN typ.typname IS NOT NULL THEN (select quote_ident(nspname) FROM pg_namespace WHERE oid = 2200::oid )||'.'||quote_ident(typ.typname) ELSE typ.typname END AS typname,
+		(CASE WHEN rel.reltoastrelid = 0 THEN false ELSE true END) AS hastoasttable,
+	    -- Added for pgAdmin4
+		(CASE WHEN (substring(array_to_string(rel.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  THEN true ELSE false END) AS autovacuum_custom,
+		(CASE WHEN (substring(array_to_string(tst.reloptions, ',') FROM 'autovacuum_enabled=([a-z|0-9]*)'))::boolean  AND rel.reltoastrelid != 0 THEN true ELSE false END) AS toast_autovacuum,
+	
+		(SELECT array_agg(provider || '=' || label) FROM pg_seclabels sl1 WHERE sl1.objoid=rel.oid AND sl1.objsubid=0) AS seclabels,
+		(CASE WHEN rel.oid <= 12400::oid THEN true ElSE false END) AS is_sys_table
+	FROM pg_class rel
+	  LEFT OUTER JOIN pg_tablespace spc on spc.oid=rel.reltablespace
+	  LEFT OUTER JOIN pg_description des ON (des.objoid=rel.oid AND des.objsubid=0 AND des.classoid='pg_class'::regclass)
+	  LEFT OUTER JOIN pg_constraint con ON con.conrelid=rel.oid AND con.contype='p'
+	  LEFT OUTER JOIN pg_class tst ON tst.oid = rel.reltoastrelid
+	  LEFT JOIN pg_type typ ON rel.reloftype=typ.oid
+	WHERE rel.relkind IN ('r','s','t') AND rel.relnamespace = 2200::oid
+	ORDER BY rel.relname;
+2017-10-18 10:05:33 CDT ERROR:  ROWS must be positive
+2017-10-18 10:05:33 CDT STATEMENT:  -- FUNCTION: public."claimed_rwd-dec-trg_func"()
+	
+	-- DROP FUNCTION public."claimed_rwd-dec-trg_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-dec-trg_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	DECLARE
+		bid integer;
+	    maxDt timestamp;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	BEGIN
+		select "businessID" from "REWARD" where "rewardID" = new."rewardID" into bid;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+		select "pointsNeeded" from "REWARD" where "rewardID" = new."rewardID" into pointsNeeded;
+		select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid AND "dateTime" = maxDt into oldTotal;
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'reward', oldTotal - pointsNeeded );
+		RETURN null;
+	END
+	    
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-dec-trg_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:06:26 CDT ERROR:  ROWS must be positive
+2017-10-18 10:06:26 CDT STATEMENT:  -- FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	-- DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:06:33 CDT ERROR:  syntax error at or near "FUNCTION" at character 192
+2017-10-18 10:06:33 CDT STATEMENT:  EXPLAIN (FORMAT JSON, ANALYZE OFF, VERBOSE OFF, COSTS OFF, BUFFERS OFF, TIMING OFF)  -- FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	-- DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:07:27 CDT ERROR:  syntax error at or near "FUNCTION" at character 1
+2017-10-18 10:07:27 CDT STATEMENT:  FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:07:40 CDT ERROR:  function public.claimed_rwd-trgr_func() does not exist
+2017-10-18 10:07:40 CDT STATEMENT:  --FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:07:50 CDT ERROR:  ROWS must be positive
+2017-10-18 10:07:50 CDT STATEMENT:  --FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	--DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:08:03 CDT ERROR:  syntax error at or near "FUNCTION" at character 189
+2017-10-18 10:08:03 CDT STATEMENT:  Explain (FORMAT JSON, ANALYZE ON, VERBOSE OFF, COSTS OFF, BUFFERS OFF, TIMING OFF)  --FUNCTION: public."claimed_rwd-trgr_func"()
+	
+	--DROP FUNCTION public."claimed_rwd-trgr_func"();
+	
+	CREATE FUNCTION public."claimed_rwd-trgr_func"()
+	    RETURNS trigger
+	    LANGUAGE 'plpgsql'
+	    COST 100
+	    VOLATILE NOT LEAKPROOF 
+	    ROWS 0
+	AS $BODY$
+	
+	DECLARE
+		pid character(100);
+	    bid integer;
+	    oldTotal integer;
+	    pointsNeeded integer;
+	    maxDt timestamp;
+	BEGIN
+		select "businessID" from "REWARD" where new."rewardID" = "rewardID"
+	    	AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+	    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+	    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+	    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+	    
+	    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+		RETURN null;
+	END
+	
+	$BODY$;
+	
+	ALTER FUNCTION public."claimed_rwd-trgr_func"()
+	    OWNER TO postgres;
+	
+2017-10-18 10:31:21 CDT ERROR:  column "buinsessID" does not exist at character 72
+2017-10-18 10:31:21 CDT HINT:  Perhaps you meant to reference the column "SCAN_TOTAL.businessID".
+2017-10-18 10:31:21 CDT QUERY:  select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid)
+2017-10-18 10:31:21 CDT CONTEXT:  PL/pgSQL function "claimed_rwd-trgr_func"() line 13 at SQL statement
+2017-10-18 10:31:21 CDT STATEMENT:  INSERT INTO public."CLAIMED_REWARD" (
+	"claimTimeStamp", "rewardID", "patronID") VALUES (
+	'now()', '10', 'patron4@ex.com');
+2017-10-18 10:33:35 CDT ERROR:  column "buinsessID" does not exist at character 72
+2017-10-18 10:33:35 CDT HINT:  Perhaps you meant to reference the column "SCAN_TOTAL.businessID".
+2017-10-18 10:33:35 CDT QUERY:  select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = new."businessID" AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid)
+2017-10-18 10:33:35 CDT CONTEXT:  PL/pgSQL function "claimed_rwd-trgr_func"() line 13 at SQL statement
+2017-10-18 10:33:35 CDT STATEMENT:  INSERT INTO public."CLAIMED_REWARD" (
+	"claimTimeStamp", "rewardID", "patronID") VALUES (
+	'now()', '10', 'patron4@ex.com');
+2017-10-18 10:40:53 CDT ERROR:  column "buinsessID" does not exist at character 72
+2017-10-18 10:40:53 CDT HINT:  Perhaps you meant to reference the column "SCAN_TOTAL.businessID".
+2017-10-18 10:40:53 CDT QUERY:  select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "buinsessID" = bid AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid)
+2017-10-18 10:40:53 CDT CONTEXT:  PL/pgSQL function "claimed_rwd-trgr_func"() line 12 at SQL statement
+2017-10-18 10:40:53 CDT STATEMENT:  INSERT INTO public."CLAIMED_REWARD" (
+	"claimTimeStamp", "rewardID", "patronID") VALUES (
+	'now()', '10', 'patron4@ex.com');
+2017-10-18 10:45:10 CDT ERROR:  null value in column "businessID" violates not-null constraint
+2017-10-18 10:45:10 CDT DETAIL:  Failing row contains (patron4@ex.com                                                  ..., null, 2017-10-18 10:45:10.297494-05, claimed   , null).
+2017-10-18 10:45:10 CDT CONTEXT:  SQL statement "insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded)"
+	PL/pgSQL function "claimed_rwd-trgr_func"() line 14 at SQL statement
+2017-10-18 10:45:10 CDT STATEMENT:  INSERT INTO public."CLAIMED_REWARD" (
+	"claimTimeStamp", "rewardID", "patronID") VALUES (
+	'now()', '10', 'patron4@ex.com');
+2017-10-18 10:48:38 CDT ERROR:  query has no destination for result data
+2017-10-18 10:48:38 CDT HINT:  If you want to discard the results of a SELECT, use PERFORM instead.
+2017-10-18 10:48:38 CDT CONTEXT:  PL/pgSQL function "claimed_rwd-trgr_func"() line 8 at SQL statement
+2017-10-18 10:48:38 CDT STATEMENT:  INSERT INTO public."CLAIMED_REWARD" (
+	"claimTimeStamp", "rewardID", "patronID") VALUES (
+	'now()', '10', 'patron4@ex.com');
+2017-10-18 10:53:56 CDT ERROR:  invalid input syntax for type timestamp with time zone: "2017-10-19 10:50:00:00" at character 107
+2017-10-18 10:53:56 CDT STATEMENT:  INSERT INTO public."SCAN_TOTAL" (
+	"businessID", "dateTime", "patronID", "transactionType") VALUES (
+	'12', '2017-10-19 10:50:00:00', 'patron4@ex.com', 'New');
