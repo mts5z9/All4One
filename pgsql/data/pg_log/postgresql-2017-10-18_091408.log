@@ -1090,3 +1090,20 @@
 2017-10-18 10:53:56 CDT STATEMENT:  INSERT INTO public."SCAN_TOTAL" (
 	"businessID", "dateTime", "patronID", "transactionType") VALUES (
 	'12', '2017-10-19 10:50:00:00', 'patron4@ex.com', 'New');
+2017-10-18 11:17:18 CDT ERROR:  null value in column "businessID" violates not-null constraint
+2017-10-18 11:17:18 CDT DETAIL:  Failing row contains (null, 9, 201 Maplewood Drive, null, Columbia, MO, 65203, maplewood@ex.com                                                ..., 5735552121, actv).
+2017-10-18 11:17:18 CDT STATEMENT:  insert into "LOCATION" ("address1", "address2", "city", "state", "postalCode", "email", "phone", "businessID", "locationStatus") values ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+2017-10-19 06:47:43 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:47:43 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:47:43 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:47:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:47:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:47:44 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-19 06:49:12 CDT LOG:  received fast shutdown request
+2017-10-19 06:49:12 CDT LOG:  aborting any active transactions
