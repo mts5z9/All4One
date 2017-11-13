@@ -1,2 +1,0 @@
-2017-10-13 19:06:11 CDT ERROR:  column "businessID" does not exist at character 168
-2017-10-13 19:06:11 CDT STATEMENT:  select "NFC_READER".*, "READER_LOCATION"."locationID" from "NFC_READER" inner join "READER_LOCATION" on "NFC_READER"."serialNum" = "READER_LOCATION"."serialNum" where "businessID" = $1
