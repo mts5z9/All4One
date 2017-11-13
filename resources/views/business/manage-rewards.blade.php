@@ -6,7 +6,10 @@
         <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading">Manage Rewards</div>
-
+                <div class="panel-body">
+                  @if($status == 'actv')<a href="/manageRewards/inactv" class="btn btn-info pull-left" style="margin-right: 3px;">Inactive Rewards</a>
+                  @elseif($status == 'inactv')<a href="/manageRewards/actv" class="btn btn-info pull-left" style="margin-right: 3px;">Active Rewards</a>@endif
+                </div>
                 <div class="panel-body table-responsive">
                   <table class="table table-striped table-bordered table-hover">
                     <tr>
@@ -14,7 +17,7 @@
                       <th>Description</th>
                       <th>Cost</th>
                       <th style="width:20%">Active Dates</th>
-                      <th style="width:20%">buttons</th>
+                      <th style="width:20%"></th>
                     </tr>
                     <tbody>
                       @foreach ($rewards as $reward)
@@ -24,8 +27,9 @@
                         <td>{{$reward->pointsNeeded}}</td>
                         <td>{{$reward->beginDate}} to {{$reward->endDate}}</td>
                         <td>
-                          <button type="button" class="btn btn-info" name="redeem">Edit</button>
-                          <button type="button" class="btn btn-info" name="redeem">Delete</button>
+                          <a href="/editReward/{{$reward->rewardID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                          @if($reward->rewardStatus == 'actv')<a href="/rewardStatus/{{$reward->rewardID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Deactivate</a>
+                          @elseif($reward->rewardStatus == 'inactv')<a href="/rewardStatus/{{$reward->rewardID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Reactivate</a>@endif
                         </td>
                       </tr>
                       @endforeach

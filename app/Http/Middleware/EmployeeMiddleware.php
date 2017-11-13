@@ -16,11 +16,19 @@ class EmployeeMiddleware
      */
     public function handle($request, Closure $next)
     {
-      $userRole = Auth::user()->role;
-      if($userRole == 'employee'|| $userRole == 'bAdmin'|| $userRole == 'Owner')
+      if(Auth::user() == NULL)
       {
-          return $next($request);
-      }else
         return redirect('/');
+      } else {
+        $userRole = Auth::user()->role;
+        if($userRole == 'employee'|| $userRole == 'bAdmin'|| $userRole == 'Owner')
+        {
+          if(Auth::user()->status == 'actv')
+          {
+            return $next($request);
+          }
+        }else
+          return redirect('/');
+      }
     }
 }

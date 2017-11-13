@@ -28,29 +28,46 @@
             <li><a href="{{ route('register') }}">Register</a></li>
         @elseif (Auth::user())
 
-        <?php $userRole = Auth::user()->role;
-        //patron links
-          if($userRole == 'patron') {
-            echo '<li><a href="/rewardHistory">Reward History</a></li>
-                  <li><a href="/scanHistory">Scan History</a></li>
-                  <li><a href="/redeem">Redeem Rewards</a></li>
-                  <li><a href="/participatingBusinesses">Participating Businesses</a></li>';
-          }
-        //business links
-          if($userRole == 'employee'||$userRole == 'Owner'||$userRole == 'bAdmin') {
-            echo '<li><a href="/manageScans">Manage Scans</a></li>';
-              if($userRole == 'bAdmin' || $userRole == 'Owner'){
-                echo '<li><a href="/manageRewards">Manage Rewards</a></li>
-                      <li><a href="/manageEmployees">Manage Employees</a></li>
-                      <li><a href="/manageLocations">Manage Locations</a></li>
-                      <li><a href="/manageScanners">Manage Scanners</a></li>';
-              }
-           }
-        //admin links
-          if($userRole == 'admin') {
-                echo '<li><a href="/scanner">Scanner Simulation</a></li>';
-          }
-          ?>
+        <?php $userRole = Auth::user()->role; ?>
+
+        <!--patron links-->
+
+        @if($userRole == 'patron')
+          <li><a href="/rewardHistory">Reward History</a></li>
+          <li><a href="/scanHistory">Scan History</a></li>
+          <li><a href="/rewards">Redeem Rewards</a></li>
+          <li><a href="/participatingBusinesses">Participating Businesses</a></li>
+        @endif
+
+        <!--business links-->
+        @if($userRole == 'employee')
+          <a href="/manageScans">Scans</a>
+        @endif
+        @if($userRole == 'Owner'||$userRole == 'bAdmin')
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+              Manage <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+                <a href="/manageScans">Scans</a>
+                <a href="/manageRewards/actv">Rewards</a>
+                <a href="/manageEmployees/actv">Employees</a>
+                <a href="/manageLocations/actv">Locations</a>
+                <a href="/manageScanners/actv">Scanners</a>
+            </li>
+          </ul>
+       </li>
+       @endif
+       @if($userRole == 'bAdmin' || $userRole == 'Owner')
+        <li><a href="/scanStats/year">Scan Statistics</a></li>
+        <li><a href="/rewardStats/year">Reward Statistics</a></li>
+       @endif
+       <!--Admin-->
+        @if($userRole == 'admin')
+          <li><a href="/scanner">Scanner Simulation</a></li>
+        @endif
+
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
                     {{ Auth::user()->firstName }} <span class="caret"></span>

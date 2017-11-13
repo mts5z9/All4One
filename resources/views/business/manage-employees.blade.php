@@ -6,6 +6,10 @@
         <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading">Manage Employees</div>
+                <div class="panel-body">
+                  @if($status == 'actv')<a href="/manageEmployees/inactv" class="btn btn-info pull-left" style="margin-right: 3px;">Inactive Employees</a>
+                  @elseif($status == 'inactv')<a href="/manageEmployees/actv" class="btn btn-info pull-left" style="margin-right: 3px;">Active Employees</a>@endif
+                </div>
                 <div class="panel-body table-responsive">
                   <table class="table table-striped table-bordered table-hover">
                     <tr>
@@ -24,10 +28,13 @@
                         @elseif($employee->role == 'bAdmin')<td>Business Admin</td>
                         @elseif($employee->role == 'Owner')<td>Business Owner</td>@endif
                         <td>
-                          @if($employee->role != 'Owner')<a href="/editEmployee/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-                          <a href="/deleteEmployee/{{$employee->id}}" target="_blank" data-toggle="confirmation" data-title="Delete Employee?" type="button" class="btn btn-info" name="remove">Remove</a>@endif
-                          @if($employee->role == 'employee' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="type">Grant Admin</a>
-                          @elseif($employee->role == 'bAdmin' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="revoke">Revoke Admin</a>@endif
+                          @if($employee->role != 'Owner')
+                            <a href="/editEmployee/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                            @if($employee->status == 'actv')<a href="/employeeStatus/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Deactivate</a>
+                            @elseif($employee->status == 'inactv')<a href="/employeeStatus/{{$employee->id}}" class="btn btn-info pull-left" style="margin-right: 3px;">Reactivate</a>@endif
+                            @if($employee->role == 'employee' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="type">Grant Admin</a>
+                            @elseif($employee->role == 'bAdmin' && Auth::user()->role == 'Owner')<a href="/modifyRole/{{$employee->id}}/{{$employee->role}}" type="button" class="btn btn-info" name="revoke">Revoke Admin</a>@endif
+                          @endif
                         </td>
                       </tr>
                       @endforeach

@@ -16,10 +16,15 @@ class PatronMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->role == 'patron')
+      if(Auth::user() == NULL)
       {
-          return $next($request);
-      }else
         return redirect('/');
+      } else {
+        if(Auth::user()->role == 'patron')
+        {
+            return $next($request);
+        }else
+          return redirect('/');
+      }
     }
 }

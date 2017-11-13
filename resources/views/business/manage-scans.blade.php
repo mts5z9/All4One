@@ -10,21 +10,23 @@
                 <div class="panel-body table-responsive">
                   <table class="table table-striped table-bordered table-hover">
                     <tr>
-                      <th>Time</th>
-                      <th>Customer Name</th>
                       <th>Card ID</th>
-                      <th style="width:30%">buttons</th>
+                      <th>Customer Name</th>
+                      <th>Time</th>
+                      <th></th>
                     </tr>
-                    <!--populate from database -->
-                    <tr>
-                      <td>8/24/17 3:45</td>
-                      <td>John Smith</td>
-                      <td>34256vhfd3424</td>
-                      <td>
-                        <button type="button" class="btn btn-info" name="redeem">Edit</button>
-                        <button type="button" class="btn btn-info" name="redeem">Delete</button>
-                      </td>
-                    </tr>
+                    <tbody>
+                      @foreach ($scans as $scan)
+                      <tr>
+                        <td>{{$scan->cardID}}</td>
+                        <td>{{$scan->patronEmail}}</td>
+                        <td>{{$scan->timeStamp}}</td>
+                        <td>
+                          <a href="/editScanner/{{$scan->cardID}}/{{$scan->timeStamp}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
+                        </td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                   </table>
                 </div>
             </div>

@@ -43,10 +43,11 @@
                               @endif
                           </div>
                       </div>
+
                       <div class="form-group{{ $errors->has('beginDate') ? ' has-error' : '' }}">
                           <label for="beginDate" class="col-md-4 control-label">Start Date</label>
                           <div class="col-md-6">
-                              <input id="beginDate" type="text" class="form-control" name="beginDate" value="" required autofocus>
+                              <input type="text" name="beginDate" id="beginDate" alt="date" class="form-control IP_calendar" title="Y-m-d" value="" required autofocus>
                               @if ($errors->has('beginDate'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('beginDate') }}</strong>
@@ -57,7 +58,7 @@
                       <div class="form-group{{ $errors->has('endDate') ? ' has-error' : '' }}">
                           <label for="endDate" class="col-md-4 control-label">End Date</label>
                           <div class="col-md-6">
-                              <input id="endDate" type="text" class="form-control" name="endDate" value="" autofocus>
+                              <input type="text" name="endDate" id="endDate" alt="date" class="form-control IP_calendar" title="Y-m-d" value="" required autofocus>
                               @if ($errors->has('endDate'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('endDate') }}</strong>

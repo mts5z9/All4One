@@ -37,9 +37,13 @@ Route::get('/rewardHistory', function() {
   return view('patron/reward-history');
 })->middleware('patron');
 Route::middleware(['patron'])->group(function () {
+  Route::get('/rewards','PatronController@showRewards');
+  Route::get('/claim/{id}','PatronController@claim');
   Route::get('/registerCard','PatronController@showRegister');
   Route::post('/register-card','PatronController@registerCard');
   Route::get('/participatingBusinesses','PatronController@showParticipatingBusinesses');
+  Route::get('/rewardHistory','PatronController@showRewardHistory');
+  Route::get('/scanHistory','PatronController@showScanHistory');
 });
 
 //Business Portal Routes
@@ -51,33 +55,41 @@ Route::post('/business-register', 'Auth\BusinessRegisterController@register');
 
 Route::middleware(['businessAdmin'])->group(function() {
   //manage employees
-  Route::get('/manageEmployees','BusinessController@showManageEmployees');
-  Route::get('/editEmployee/{id}','BusinessController@showEditEmployee');
+  Route::get('/manageEmployees/{status}','BusinessEmployeeController@show');
+  Route::get('/editEmployee/{id}','BusinessEmployeeController@showEdit');
   Route::get('/addEmployee', 'Auth\EmployeeRegisterController@show');
-  Route::get('modifyRole/{id}/{userRole}', 'Auth\EmployeeRegisterController@modifyRole');
+  Route::get('/modifyRole/{id}/{userRole}', 'Auth\EmployeeRegisterController@modifyRole');
   Route::post('/employee-register', 'Auth\EmployeeRegisterController@registerEmployee');
-  Route::post('/employee-edit/{id}', 'BusinessController@editEmployee');
-  Route::get('deleteEmployee/{id}', 'BusinessController@removeEmployee');
+  Route::post('/employee-edit/{id}', 'BusinessEmployeeController@edit');
+  Route::get('/employeeStatus/{id}', 'BusinessEmployeeController@changeStatus');
   //manage rewards
-  Route::get('/manageRewards','BusinessController@showManageRewards');
-  Route::get('/createReward', 'BusinessController@showCreateReward');
-  Route::post('/reward-create', 'BusinessController@createReward');
+  Route::get('/manageRewards/{status}','BusinessRewardController@show');
+  Route::get('/createReward', 'BusinessRewardController@showCreate');
+  Route::post('/reward-create', 'BusinessRewardController@create');
+  Route::get('/rewardStatus/{id}','BusinessRewardController@changeStatus');
+  Route::get('/editReward/{id}','BusinessRewardController@showEdit');
+  Route::post('/edit-reward/{id}','BusinessRewardController@edit');
   //manage locations
-  Route::get('/manageLocations', 'BusinessController@showManageLocations');
-  Route::get('/createLocation', 'BusinessController@showCreateLocation');
-  Route::post('/location-create', 'BusinessController@createLocation');
-  Route::get('/editLocation/{id}', 'BusinessController@showEditLocation');
-  Route::post('/edit-location/{id}', 'BusinessController@editLocation');
+  Route::get('/manageLocations/{status}', 'BusinessLocationController@show');
+  Route::get('/createLocation', 'BusinessLocationController@showCreate');
+  Route::post('/location-create', 'BusinessLocationController@create');
+  Route::get('/editLocation/{id}', 'BusinessLocationController@showEdit');
+  Route::post('/edit-location/{id}', 'BusinessLocationController@edit');
+  Route::get('/locationStatus/{id}','BusinessLocationController@changeStatus');
   //manage Scanners
-  Route::get('/manageScanners','BusinessController@showManageScanners');
-  Route::get('/addScanner','BusinessController@showAddScanner');
-  Route::post('/add-scanner','BusinessController@addScanner');
+  Route::get('/manageScanners/{status}','BusinessScannerController@show');
+  Route::get('/addScanner','BusinessScannerController@showCreate');
+  Route::post('/add-scanner','BusinessScannerController@create');
+  Route::get('/scannerStatus/{id}','BusinessScannerController@changeStatus');
+  //Statistics
+  Route::get('/scanStats/{time}','BusinessStatsController@showScanStats');
+  Route::get('/rewardStats/{time}','BusinessStatsController@showRewardStats');
 });
 
 Route::get('/manageScans', 'BusinessController@showManageScans');
-Route::get('/scan', 'ScannerController@newScan');
 
 //Admin Portal Routes
-Route::get('/scanner', function() {
-  return view('admin/scanner');
-})->middleware('admin');
+Route::middleware(['admin'])->group(function() {
+  Route::get('/scanner','ScannerController@showScanner');
+  Route::post('/scan','ScannerController@newScan');
+});

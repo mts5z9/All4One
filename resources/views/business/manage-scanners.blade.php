@@ -6,7 +6,10 @@
         <div class="col-md-12 ">
             <div class="panel panel-default">
                 <div class="panel-heading">Manage Business Scanners</div>
-
+                <div class="panel-body">
+                  @if($status == 'actv')<a href="/manageScanners/inactv" class="btn btn-info pull-left" style="margin-right: 3px;">Inactive Scanners</a>
+                  @elseif($status == 'inactv')<a href="/manageScanners/actv" class="btn btn-info pull-left" style="margin-right: 3px;">Active Scanners</a>@endif
+                </div>
                 <div class="panel-body table-responsive">
                   <table class="table table-striped table-bordered table-hover">
                     <tr>
@@ -14,7 +17,7 @@
                       <th>pin</th>
                       <th>Location</th>
                       <th>Status</th>
-                      <th style="width:20%">buttons</th>
+                      <th style="width:20%"></th>
                     </tr>
                     <tbody>
                       @foreach ($scanners as $scanner)
@@ -25,7 +28,8 @@
                         <td>{{$scanner->readerStatus}}</td>
                         <td>
                           <a href="/editScanner/{{$scanner->serialNum}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
-                          <button type="button" class="btn btn-info" name="redeem">Delete</button>
+                          @if($scanner->readerStatus == 'actv')<a href="/scannerStatus/{{$scanner->serialNum}}" class="btn btn-info pull-left" style="margin-right: 3px;">Deactivate</a>
+                          @elseif($scanner->readerStatus == 'inactv')<a href="/scannerStatus/{{$scanner->serialNum}}" class="btn btn-info pull-left" style="margin-right: 3px;">Reactivate</a>@endif
                         </td>
                       </tr>
                       @endforeach

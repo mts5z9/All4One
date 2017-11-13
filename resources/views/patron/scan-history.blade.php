@@ -11,25 +11,18 @@
                   <table class="table table-striped table-bordered table-hover">
                     <tr>
                       <th>Business</th>
-                      <th>Date</th>
+                      <th>Location</th>
                       <th>Time</th>
                     </tr>
-                    <!--populate from database -->
-                    <tr>
-                      <th>Rose Music Hall</th>
-                      <th>8/15/2017</th>
-                      <th>5:58pm</th>
-                    </tr>
-                    <tr>
-                      <th>Sparkys</th>
-                      <th>8/19/2017</th>
-                      <th>7:34pm</th>
-                    </tr>
-                    <tr>
-                      <th>Trops</th>
-                      <th>8/25/2017</th>
-                      <th>8:13pm</th>
-                    </tr>
+                    <tbody>
+                      @foreach ($scans as $scan)
+                      <tr>
+                        <td>{{$scan->businessName}}</td>
+                        <td>{{$scan->city}}, {{$scan->state}}</td>
+                        <td>{{$scan->timeStamp}}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                   </table>
                 </div>
             </div>

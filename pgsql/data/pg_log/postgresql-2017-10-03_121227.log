@@ -1,6 +1,0 @@
-2017-10-03 12:12:27 CDT LOG:  database system was interrupted; last known up at 2017-09-30 11:49:38 CDT
-2017-10-03 12:12:27 CDT LOG:  creating missing WAL directory "pg_xlog/archive_status"
-2017-10-03 12:12:32 CDT FATAL:  could not open directory "pg_replslot": No such file or directory
-2017-10-03 12:12:32 CDT LOG:  startup process (PID 4172) exited with exit code 1
-2017-10-03 12:12:32 CDT LOG:  aborting startup due to startup process failure
-2017-10-03 12:12:32 CDT LOG:  database system is shut down

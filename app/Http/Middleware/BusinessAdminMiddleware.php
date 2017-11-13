@@ -16,11 +16,17 @@ class BusinessAdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-      $userRole = Auth::user()->role;
-      if($userRole == 'bAdmin'|| $userRole == 'Owner')
+      if(Auth::user() == NULL)
       {
-          return $next($request);
-      }else
         return redirect('/');
+      } else {
+        $userRole = Auth::user()->role;
+        if($userRole == 'bAdmin'|| $userRole == 'Owner')
+        {
+            return $next($request);
+        }else
+          return redirect('/');
+      }
+
     }
 }

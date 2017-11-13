@@ -43,7 +43,9 @@ class EmployeeRegisterController extends Controller
       DB::table('USERS')
         ->where('id', $id)
         ->update(['role' => $userRole]);
-      return redirect('/manageEmployees');
+        $status = DB::table('USERS')->where('id',$id)->value('status');
+        $redirect = '/manageEmployees/'.$status;
+        return redirect($redirect);
     }
     protected function validator(array $data)
     {

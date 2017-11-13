@@ -16,10 +16,15 @@ class BusinessOwnerMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->role == 'Owner')
+      if(Auth::user() == NULL)
       {
-          return $next($request);
-      }else
         return redirect('/');
+      } else {
+        if(Auth::user()->role == 'Owner')
+        {
+            return $next($request);
+        }else
+          return redirect('/');
+      }
     }
 }

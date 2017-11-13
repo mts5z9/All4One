@@ -109,6 +109,8 @@ class BusinessRegisterController extends Controller
 
     protected function linkBusiness(int $businessId,array $data)
     {
+      $data['email'] = strtolower($data['email']);
+      $data['businessEmail'] = strtolower($data['businessEmail']);
       $locationId = DB::table("LOCATION")
         ->insertGetId([
           'businessID' => $businessId,
@@ -119,7 +121,7 @@ class BusinessRegisterController extends Controller
           'postalCode' => $data['businessPostalCode'],
           'email' => $data['businessEmail'],
           'phone' => $data['businessPhone'],
-          'locationStatus' => 'active',
+          'locationStatus' => 'actv',
         ],'locationID');
 
       DB::table("EMPLOYEE")

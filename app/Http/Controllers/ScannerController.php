@@ -13,23 +13,33 @@ use Illuminate\Support\Facades\DB;
 
 class ScannerController extends Controller
 {
-    public function __construct()
-    {
-
-    }
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
 
-    //scanner
-    public function newScan()
+    public function showScanner()
     {
+      $locations = DB::table('LOCATION')
+        ->join('BUSINESS','LOCATION.businessID','=','BUSINESS.businessID')
+        ->where('LOCATION.locationStatus', 'actv')
+        ->select('LOCATION.*','BUSINESS.businessName')
+        ->orderby('LOCATION.locationID','asc')->get();
+      $cards = DB::table('ACCOUNT')
+        ->where('accountStatus', 'actv')
+        ->orderby('cardID', 'asc')->get();
+
+      return view('admin.scanner',['cards' => $cards, 'locations' => $locations]);
+    }
+
+    public function newScan(Request $data)
+    {
+      $businessID = DB::table('LOCATION')->where('locationID', $data['locationID'])->value('businessID');
       DB::table('SCAN')
         ->insert([
-                  'cardID' => 'patron4card',
-                  'timeStamp' => '2017-10-19 10:23:54+02',
-                  'locationID' => '6',
-                  'businessID' => '12',
+                  'cardID' => $data['cardID'],
+                  'timeStamp' => date('Y-m-d H:i:sO'),
+                  'locationID' => $data['locationID'],
+                  'businessID' => $businessID,
                 ]);
-      return view('admin.scanner');
+      return redirect('/scanner');
     }
 }

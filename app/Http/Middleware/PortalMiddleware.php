@@ -16,19 +16,26 @@ class PortalMiddleware
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::guest()){
+      if(Auth::user() == NULL)
+      {
         return redirect('/');
-      }else if (Auth::user()) {
-        if(Auth::user()->role == 'employee'){
-          return redirect('/manageScans');
-        }else if(Auth::user()->role == 'patron'){
-          return redirect('/redeem');
-        }else if(Auth::user()->role == 'admin'){
-          return redirect('/scanner');
-        }else if(Auth::user()->role == 'Owner'){
-          return redirect('/manageRewards');
-        }else if(Auth::user()->role == 'bAdmin'){
-          return redirect('/manageRewards');
+      } else {
+        if(Auth::guest()){
+          return redirect('/');
+        }else if (Auth::user()) {
+          if(Auth::user()->role == 'employee'){
+            return redirect('/manageScans');
+          }else if(Auth::user()->role == 'patron'){
+            return redirect('/rewards');
+          }else if(Auth::user()->role == 'admin'){
+            return redirect('/scanner');
+          }else if(Auth::user()->role == 'Owner'){
+            return redirect('/manageRewards/actv');
+          }else if(Auth::user()->role == 'bAdmin'){
+            return redirect('/manageRewards/actv');
+          }
+        } else {
+          return redirect('/');
         }
       }
     }

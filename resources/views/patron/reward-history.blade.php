@@ -12,32 +12,21 @@
                     <tr>
                       <th>Business</th>
                       <th>Reward</th>
+                      <th>Description</th>
                       <th>Points Spent</th>
-                      <th>Date</th>
                       <th>Time</th>
                     </tr>
-                    <!--populate from database -->
-                    <tr>
-                      <th>Rose Music Hall</th>
-                      <th>Free Drink</th>
-                      <th>8pts.</th>
-                      <th>8/15/2017</th>
-                      <th>5:58pm</th>
-                    </tr>
-                    <tr>
-                      <th>Sparkys</th>
-                      <th>Free Scoop</th>
-                      <th>10pts.</th>
-                      <th>8/19/2017</th>
-                      <th>7:34pm</th>
-                    </tr>
-                    <tr>
-                      <th>Trops</th>
-                      <th>1 Dollar Drink</th>
-                      <th>6pts.</th>
-                      <th>8/25/2017</th>
-                      <th>8:13pm</th>
-                    </tr>
+                    <tbody>
+                      @foreach ($rewards as $reward)
+                      <tr>
+                        <td>{{$reward->businessName}}</td>
+                        <td>{{$reward->title}}</td>
+                        <td>{{$reward->descr}}</td>
+                        <td>{{$reward->pointsSpent}}</td>
+                        <td>{{$reward->claimTimeStamp}}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
                   </table>
                 </div>
             </div>

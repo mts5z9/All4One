@@ -1,6 +1,5 @@
 @extends('layouts.app')
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script type="text/javascript">
   function changeColor(status){
     var div = document.getElementById('standby');
@@ -45,6 +44,38 @@
                     <div class="dragsnap">  </div>
                   </div>
                 </div>
+                <div class="panel-body center-block">
+                  <form class="form-horizontal" method="POST" action="/scan">
+                      {{ csrf_field() }}
+                      <div class="form-group">
+                          <label for="locationID" class="col-md-4 control-label">Location</label>
+                          <div class="col-md-6">
+                            <select class="form-control" name="locationID" id="locationID">
+                              @foreach($locations as $location)
+                                  <option value = "{{$location->locationID}}">{{$location->businessName}}: {{$location->address1}}, {{$location->city}}, {{$location->state}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label for="cardID" class="col-md-4 control-label">Card</label>
+                          <div class="col-md-6">
+                            <select class="form-control" name="cardID" id="cardID">
+                              @foreach($cards as $card)
+                                  <option value = "{{$card->cardID}}">{{$card->patronEmail}}, {{$card->cardID}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <div class="col-md-6 col-md-offset-4">
+                              <button type="submit" class="btn btn-primary">
+                                  New Scan
+                              </button>
+                          </div>
+                      </div>
+                  </form>
+                </div>
 
                 <a href="#" onclick="changeColor('success')">Success Light</a>
                 <a href="#" onclick="changeColor('failure')">Failure Light</a>
@@ -53,7 +84,7 @@
     </div>
 
 </div>
-<a href="/scan" class="btn btn-info pull-left" style="margin-right: 3px;">Scan</a>
+
 <script type="text/javascript">
   $( ".draggabble" ).on( "dragstop", function( event, ui ) {} );
 </script>
