@@ -1,0 +1,5 @@
+2017-10-19 13:54:21 CDT LOG:  received fast shutdown request
+2017-10-19 13:54:21 CDT LOG:  aborting any active transactions
+2017-10-19 13:54:21 CDT LOG:  autovacuum launcher shutting down
+2017-10-19 13:54:21 CDT LOG:  shutting down
+2017-10-19 13:54:21 CDT LOG:  database system is shut down

@@ -1,0 +1,58 @@
+2017-10-23 00:11:16 CDT ERROR:  insert or update on table "SCAN" violates foreign key constraint "fk-location"
+2017-10-23 00:11:16 CDT DETAIL:  Key (locationID, businessID)=(6, 12) is not present in table "LOCATION".
+2017-10-23 00:11:16 CDT STATEMENT:  insert into "SCAN" ("cardID", "timeStamp", "locationID", "businessID") values ($1, $2, $3, $4)
+2017-10-23 00:17:50 CDT ERROR:  column "LocationID" does not exist at character 43
+2017-10-23 00:17:50 CDT HINT:  Perhaps you meant to reference the column "LOCATION.locationID".
+2017-10-23 00:17:50 CDT STATEMENT:  select "businessID" from "LOCATION" where "LocationID" = $1 limit 1
+2017-10-23 01:21:13 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-23 01:21:13 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-23 01:21:13 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-23 01:21:13 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-23 19:51:39 CDT ERROR:  null value in column "value" violates not-null constraint
+2017-10-23 19:51:39 CDT DETAIL:  Failing row contains (7, month, null, null).
+2017-10-23 19:51:39 CDT STATEMENT:  INSERT INTO public."TRANSLATE" (
+	category, "transID") VALUES (
+	'month', '7');
+2017-10-23 19:52:29 CDT ERROR:  null value in column "effectiveDate" violates not-null constraint
+2017-10-23 19:52:29 CDT DETAIL:  Failing row contains (7, month, Jul, null).
+2017-10-23 19:52:29 CDT STATEMENT:  INSERT INTO public."TRANSLATE" (
+	category, "transID", value) VALUES (
+	'month', '7', 'Jul');
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 00:08:24 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 14:46:17 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-10-24 14:46:17 CDT LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	

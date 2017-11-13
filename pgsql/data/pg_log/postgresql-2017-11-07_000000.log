@@ -1,0 +1,32 @@
+2017-11-07 10:49:33 CST ERROR:  cannot drop sequence "CLAIMED_REWARD_claimID_seq" because other objects depend on it
+2017-11-07 10:49:33 CST DETAIL:  default for table "CLAIMED_REWARD" column claimID depends on sequence "CLAIMED_REWARD_claimID_seq"
+2017-11-07 10:49:33 CST HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+2017-11-07 10:49:33 CST STATEMENT:  DROP SEQUENCE public."CLAIMED_REWARD_claimID_seq";
+2017-11-07 10:49:47 CST ERROR:  column "claimID" does not exist at character 50
+2017-11-07 10:49:47 CST STATEMENT:  SELECT "patronID", "rewardID", "claimTimeStamp", "claimID"
+		FROM public."CLAIMED_REWARD";
+2017-11-07 10:49:49 CST ERROR:  column "claimID" does not exist at character 50
+2017-11-07 10:49:49 CST STATEMENT:  SELECT "patronID", "rewardID", "claimTimeStamp", "claimID"
+		FROM public."CLAIMED_REWARD";
+2017-11-07 11:57:28 CST ERROR:  column "10" does not exist at character 92
+2017-11-07 11:57:28 CST STATEMENT:  select "SCAN_TOTAL"."total" from "SCAN_TOTAL" inner join "REWARD" on "REWARD"."rewardID" = "10" where ("SCAN_TOTAL"."patronID" = $1 and "SCAN_TOTAL"."businessID" = $2) order by "SCAN_TOTAL"."dateTime" desc limit 1
+2017-11-07 11:59:17 CST ERROR:  column "12" does not exist at character 92
+2017-11-07 11:59:17 CST STATEMENT:  select "SCAN_TOTAL"."total" from "SCAN_TOTAL" inner join "REWARD" on "REWARD"."rewardID" = "12" where ("SCAN_TOTAL"."patronID" = $1 and "SCAN_TOTAL"."businessID" = $2) order by "SCAN_TOTAL"."dateTime" desc limit 1
+2017-11-07 12:56:41 CST ERROR:  column CLAIMED_REWARD.timeStamp does not exist at character 161
+2017-11-07 12:56:41 CST STATEMENT:  select * from "CLAIMED_REWARD" inner join "REWARD" on "REWARD"."rewardID" = "CLAIMED_REWARD"."rewardID" where "REWARD"."businessID" = $1 and extract(month from "CLAIMED_REWARD"."timeStamp") = $2 and extract(year from "CLAIMED_REWARD"."timeStamp") = $3
+2017-11-07 14:50:35 CST ERROR:  column "locationStatus" does not exist at character 53
+2017-11-07 14:50:35 CST STATEMENT:  select * from "REWARD" where ("businessID" = $1 and "locationStatus" = $2) order by "rewardID" asc
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
+2017-11-08 04:22:26 CST LOG:  could not receive data from client: An existing connection was forcibly closed by the remote host.
+	
