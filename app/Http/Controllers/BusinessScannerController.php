@@ -57,6 +57,25 @@ class BusinessScannerController extends BusinessController
         ]);
         return redirect('/manageScanners/actv');
     }
+    public function showEdit($id)
+    {
+      $scanner = DB::table('NFC_READER')
+                  ->where('serialNum',$id)->first();
+      $locations = $this->getLocations('actv');
+      return view('business.edit-scanner',['scanner'=>$scanner,'locations'=>$locations]);
+    }
+    public function edit(Request $request,$id)
+    {
+      $this->addScannerValidator($request->all())->validate();
+      DB::table('NFC_READER')
+          ->where('serialNum',$id)
+          ->update([
+                    'serialNum' => $request['serialNum'],
+                    'pin' => $request['pin'],
+                    'model' => $request['model'],
+                  ]);
+      return redirect('/manageScanners/actv');
+    }
     public function addScannerValidator(array $data)
     {
       return Validator::make($data, [

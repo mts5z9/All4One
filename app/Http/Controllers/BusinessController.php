@@ -47,6 +47,56 @@ class BusinessController extends Controller
                   ->orderBy('rewardID','asc')->get();
       return $rewards;
     }
+    //Business Account
+    public function showEditAccount()
+    {
+      $businessID = $this->getBusinessID();
+      $business = DB::table('BUSINESS')
+                    ->where('businessID',$businessID)
+                    ->first();
+      return view('business.edit-business',['business' => $business]);
+    }
+    public function editAccount(Request $request)
+    {
+      $businessID = $this->getBusinessID();
+      $email = DB::table('BUSINESS')->where('businessID',$businessID)->value('businessEmail');
+      $this->accountValidator($request->all(),$email)->validate();
+      DB::table('BUSINESS')
+        ->where('businessID',$businessID)
+        ->update([
+                  'businessName' => $request['businessName'],
+                  'category' => $request['category'],
+                  'busDescr' => $request['busDescr'],
+                  'phone' => $request['businessPhone'],
+                  'businessEmail' => $request['businessEmail'],
+                ]);
+
+      return redirect('/portalDirect');
+    }
+    protected function accountValidator(array $data, $email)
+    {
+      if($data['businessEmail'] == $email) {
+        return Validator::make($data, [
+            //Business Info
+            'businessName' => 'required|string|max:255',
+            'category' => 'required|string|max:10',
+            'busDescr' => 'required|string|max:255',
+            'businessPhone' => 'required|string|max:10',
+            'businessEmail' => 'required|string|email|max:255',
+        ]);
+      } else {
+        return Validator::make($data, [
+            //Business Info
+            'businessName' => 'required|string|max:255',
+            'category' => 'required|string|max:10',
+            'busDescr' => 'required|string|max:255',
+            'businessPhone' => 'required|string|max:10',
+            'businessEmail' => 'required|string|email|max:255|unique:BUSINESS',
+        ]);
+      }
+
+
+    }
     //Manage Scans
 
     public function showManageScans()

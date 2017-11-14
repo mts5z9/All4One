@@ -43,9 +43,9 @@ class BusinessLocationController extends BusinessController
                  'phone' => $request['phone'],
                  'businessID' => $businessID,
                ]);
-               $status = DB::table('LOCATION')->where('locationID',$id)->value('locationStatus');
-               $redirect = '/manageLocations/'.$status;
-               return redirect($redirect);
+       $status = DB::table('LOCATION')->where('locationID',$id)->value('locationStatus');
+       $redirect = '/manageLocations/'.$status;
+       return redirect($redirect);
     }
     public function showCreate()
     {

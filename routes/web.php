@@ -7,35 +7,22 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 */
+Auth::routes();
+
 Route::get('/', function () {
     return view('home');
 });
-
-
-Auth::routes();
-
 Route::get('/portalDirect', function() {
   return view('home');
 })->middleware('portal');
+
 //User Routes
-Route::get('/editAccount/{id}', function ($id) {
-  $user = DB::table('USERS')
-    ->where('id', $id)->first();
-  return view('auth.edit-account', ['user' => $user]);
-});
+Route::get('/editAccount/{id}','UserController@showEdit');
 Route::post('/account-edit/{id}', 'UserController@editAccount');
 Route::get('/changePassword','UserController@showChangePassword');
 Route::post('/change-password','UserController@changePassword');
+
 //Patron Portal Routes
-Route::get('/redeem', function() {
-  return view('patron/redeem');
-})->middleware('patron');
-Route::get('/scanHistory', function() {
-  return view('patron/scan-history');
-})->middleware('patron');
-Route::get('/rewardHistory', function() {
-  return view('patron/reward-history');
-})->middleware('patron');
 Route::middleware(['patron'])->group(function () {
   Route::get('/rewards','PatronController@showRewards');
   Route::get('/claim/{id}','PatronController@claim');
@@ -44,12 +31,11 @@ Route::middleware(['patron'])->group(function () {
   Route::get('/participatingBusinesses','PatronController@showParticipatingBusinesses');
   Route::get('/rewardHistory','PatronController@showRewardHistory');
   Route::get('/scanHistory','PatronController@showScanHistory');
+  Route::get('/redeem', function() { return view('patron/redeem'); });
 });
 
 //Business Portal Routes
-Route::get('/businessWelcome', function () {
-  return view('business/business-welcome');
-});
+Route::get('/businessWelcome', function () {return view('business/business-welcome');});
 Route::get('/businessRegister', 'Auth\BusinessRegisterController@show');
 Route::post('/business-register', 'Auth\BusinessRegisterController@register');
 
@@ -80,10 +66,16 @@ Route::middleware(['businessAdmin'])->group(function() {
   Route::get('/manageScanners/{status}','BusinessScannerController@show');
   Route::get('/addScanner','BusinessScannerController@showCreate');
   Route::post('/add-scanner','BusinessScannerController@create');
+  Route::get('/editScanner/{id}','BusinessScannerController@showEdit');
+  Route::post('/edit-scanner/{id}','BusinessScannerController@edit');
   Route::get('/scannerStatus/{id}','BusinessScannerController@changeStatus');
   //Statistics
   Route::get('/scanStats/{time}','BusinessStatsController@showScanStats');
   Route::get('/rewardStats/{time}','BusinessStatsController@showRewardStats');
+});
+Route::middleware(['businessOwner'])->group(function() {
+  Route::get('/editBusinessAccount','BusinessController@showEditAccount');
+  Route::post('/edit-businessAccount','BusinessController@editAccount');
 });
 
 Route::get('/manageScans', 'BusinessController@showManageScans');

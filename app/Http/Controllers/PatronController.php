@@ -86,7 +86,7 @@ class PatronController extends Controller
                         ->latest('SCAN_TOTAL.dateTime')
                         ->value('SCAN_TOTAL.total');
       $pointsSpent = DB::table('REWARD')->where('rewardID',$rewardID)->value('pointsNeeded');
-      if($pointsTotal > $pointsSpent)
+      if($pointsTotal >= $pointsSpent)
       {
         DB::table('CLAIMED_REWARD')
         ->insert([

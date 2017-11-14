@@ -19,6 +19,12 @@ class UserController extends Controller
     }
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
+    public function showEdit($id)
+    {
+      $user = DB::table('USERS')
+        ->where('id', $id)->first();
+      return view('auth.edit-account', ['user' => $user]);
+    }
     public function editAccount(Request $request, $id)
     {
       $email = DB::table('USERS')->where('id',$id)->value('email');
