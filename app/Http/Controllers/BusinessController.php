@@ -17,13 +17,7 @@ class BusinessController extends Controller
 {
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
-    public function getBusinessID ()
-    {
-      $businessId = DB::table('EMPLOYEE')
-        ->where('emplid', Auth::user()->email)
-        ->value('businessID');
-      return $businessId;
-    }
+    
     public function getLocations($status)
     {
       $businessId = $this->getBusinessID();

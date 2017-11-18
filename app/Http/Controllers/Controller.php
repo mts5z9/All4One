@@ -23,4 +23,11 @@ class Controller extends BaseController
         ->where('category','month')
         ->orderby('transID','asc')->get();
     }
+    public function getBusinessID ()
+    {
+      $businessId = DB::table('EMPLOYEE')
+        ->where('emplid', Auth::user()->email)
+        ->value('businessID');
+      return $businessId;
+    }
 }

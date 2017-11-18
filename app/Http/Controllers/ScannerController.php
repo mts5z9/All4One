@@ -30,16 +30,23 @@ class ScannerController extends Controller
       return view('admin.scanner',['cards' => $cards, 'locations' => $locations]);
     }
 
-    public function newScan(Request $data)
+    public function scanProgress(Request $data)
     {
       $businessID = DB::table('LOCATION')->where('locationID', $data['locationID'])->value('businessID');
-      DB::table('SCAN')
+      return view('admin.scannerProgress',['data'=>$data->all(),'businessID'=>$businessID]);
+    }
+
+    public function newScan(Request $request)
+    {
+      $businessID = DB::table('LOCATION')->where('locationID', $data['locationID'])->value('businessID');
+      $data = $request->all();
+      $result = DB::table('SCAN')
         ->insert([
                   'cardID' => $data['cardID'],
                   'timeStamp' => date('Y-m-d H:i:sO'),
                   'locationID' => $data['locationID'],
                   'businessID' => $businessID,
                 ]);
-      return redirect('/scanner');
+      return $result;
     }
 }

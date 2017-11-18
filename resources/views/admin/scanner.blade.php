@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 <script type="text/javascript">
   function changeColor(status){
     var div = document.getElementById('standby');
@@ -8,30 +7,9 @@
        div.setAttribute("id","standby");
     }, 1000);
   }
-  $( function() {
-    $( "#draggable" ).draggable({
-      snap: '.dragsnap',
-      helper: cardHelper,
-      stop: handleDragStop
-    });
-  } );
-
-  function cardHelper( event ) {
-    return '<div id="draggablehelper">All4One Rewards</div>';
-  }
-
-  function handleDragStop(event, ui) {
-    changeColor('success');
-    <?php
-    //$date = new DateTime();
-    //DB::table('SCAN')->insert(
-    //  ['cardID' => '1234','timeStamp'=>$date,'locationID'=>'12345','businessID'=>'4231']
-    //);
-    ?>
-  }
 </script>
+
 @section('content')
-<div class="" id="draggable">All4One Rewards</div>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -68,6 +46,17 @@
                           </div>
                       </div>
                       <div class="form-group">
+                        <label for="cardID" class="col-md-4 control-label">Number of Scans</label>
+                        <div class="col-md-6">
+                          <select class="form-control" name="scanNumber" id="scanNumber">
+                                <option value = "1">1</option>
+                                <option value = "5">5</option>
+                                <option value = "10">10</option>
+                                <option value = "20">20</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="form-group">
                           <div class="col-md-6 col-md-offset-4">
                               <button type="submit" class="btn btn-primary">
                                   New Scan
@@ -77,16 +66,11 @@
                   </form>
                 </div>
 
-                <a href="#" onclick="changeColor('success')">Success Light</a>
-                <a href="#" onclick="changeColor('failure')">Failure Light</a>
+                <a href="" onclick="changeColor('success')">Success Light</a>
+                <a href="" onclick="changeColor('failure')">Failure Light</a>
             </div>
         </div>
     </div>
 
 </div>
-
-<script type="text/javascript">
-  $( ".draggabble" ).on( "dragstop", function( event, ui ) {} );
-</script>
-
 @endsection

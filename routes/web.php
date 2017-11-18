@@ -83,5 +83,6 @@ Route::get('/manageScans', 'BusinessController@showManageScans');
 //Admin Portal Routes
 Route::middleware(['admin'])->group(function() {
   Route::get('/scanner','ScannerController@showScanner');
-  Route::post('/scan','ScannerController@newScan');
+  Route::post('/scan','ScannerController@scanProgress');
+  Route::post('/newScan','ScannerController@newScan');
 });
