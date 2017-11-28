@@ -23,7 +23,7 @@
                   </div>
                 </div>
                 <div class="panel-body center-block">
-                  <form class="form-horizontal" method="POST" action="/scan">
+                  <form class="form-horizontal" method="POST" action="/newScan">
                       {{ csrf_field() }}
                       <div class="form-group">
                           <label for="locationID" class="col-md-4 control-label">Location</label>
@@ -65,9 +65,6 @@
                       </div>
                   </form>
                 </div>
-
-                <a href="" onclick="changeColor('success')">Success Light</a>
-                <a href="" onclick="changeColor('failure')">Failure Light</a>
             </div>
         </div>
     </div>

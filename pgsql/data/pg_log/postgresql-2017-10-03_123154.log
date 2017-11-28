@@ -1,7 +1,0 @@
-2017-10-03 12:31:54 CDT LOG:  database system was interrupted while in recovery at 2017-10-03 12:31:50 CDT
-2017-10-03 12:31:54 CDT HINT:  This probably means that some data is corrupted and you will have to use the last backup for recovery.
-2017-10-03 12:31:55 CDT LOG:  database system was not properly shut down; automatic recovery in progress
-2017-10-03 12:31:55 CDT FATAL:  could not open directory "pg_stat": No such file or directory
-2017-10-03 12:31:55 CDT LOG:  startup process (PID 9956) exited with exit code 1
-2017-10-03 12:31:55 CDT LOG:  aborting startup due to startup process failure
-2017-10-03 12:31:55 CDT LOG:  database system is shut down

@@ -38,15 +38,30 @@ class ScannerController extends Controller
 
     public function newScan(Request $request)
     {
-      $businessID = DB::table('LOCATION')->where('locationID', $data['locationID'])->value('businessID');
+      $scanSuccess;
+      $seconds = date('s');
+      $date = date('Y-m-d H:i:') . $seconds . date('O');
       $data = $request->all();
-      $result = DB::table('SCAN')
-        ->insert([
-                  'cardID' => $data['cardID'],
-                  'timeStamp' => date('Y-m-d H:i:sO'),
-                  'locationID' => $data['locationID'],
-                  'businessID' => $businessID,
-                ]);
-      return $result;
+      $businessID = DB::table('LOCATION')->where('locationID', $data['locationID'])->value('businessID');
+      for($i=0;$i<$data['scanNumber'];$i++)
+      {
+        $scanSuccess[$i] = DB::table('SCAN')
+          ->insert([
+                    'cardID' => $data['cardID'],
+                    'timeStamp' => $date,
+                    'locationID' => $data['locationID'],
+                    'businessID' => $businessID,
+                  ]);
+        if($seconds == 60)
+        {
+          $seconds = 0;
+        } else {
+          $seconds++;
+        }
+        $date = date('Y-m-d H:i:') . $seconds . date('O');
+      }
+      $scanSuccess[0] = false;
+      return view('admin.scannerProgress',['scans'=>$scanSuccess]);
+
     }
 }
