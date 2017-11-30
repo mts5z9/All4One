@@ -1,0 +1,854 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.5
+-- Dumped by pg_dump version 9.6.5
+
+-- Started on 2017-11-29 18:04:57
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 2253 (class 1262 OID 16393)
+-- Dependencies: 2252
+-- Name: all4one-db; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE "all4one-db" IS 'all4one database';
+
+
+--
+-- TOC entry 1 (class 3079 OID 41245)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2255 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+--
+-- TOC entry 218 (class 1255 OID 41435)
+-- Name: claimed_rwd-trgr_func(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "claimed_rwd-trgr_func"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$DECLARE
+	pid character varying;
+    bid integer;
+    oldTotal integer;
+    pointsNeeded integer;
+    maxDt timestamp;
+BEGIN
+	select "businessID" from "REWARD" where new."rewardID" = "rewardID" into bid;
+    	--AND new."claimTimeStamp" between "beginDate" AND "endDate" into bid;
+    select "pointsNeeded" from "REWARD" where new."rewardID" = "rewardID" into pointsNeeded;
+    select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid into maxDt;
+    select "total" from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid AND "dateTime" = (select max("dateTime") from "SCAN_TOTAL" where "patronID" = new."patronID" AND "businessID" = bid) into oldTotal;
+    
+    insert into "SCAN_TOTAL" values (new."patronID", bid, new."claimTimeStamp", 'claimed', oldTotal-pointsNeeded);
+	RETURN null;
+END
+$$;
+
+
+ALTER FUNCTION public."claimed_rwd-trgr_func"() OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1255 OID 41250)
+-- Name: decrement_scan_total-trgr_func(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "decrement_scan_total-trgr_func"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$DECLARE
+	pid character(100);
+    scanDt timeStamp := old."timeStamp";
+    oldTotal integer;
+    
+  BEGIN
+  	select "patronEmail" from "ACCOUNT" where "cardID" = old."cardID" into pid;
+    select "total" from "SCAN_TOTAL" where "patronID" = pID AND "dateTime" = old."timeStamp" AND "businessID" = old."businessID" into oldTotal;
+	
+    --if oldTotal is null OR oldTotal = 0 then
+	--	INSERT INTO "SCAN_TOTAL" VALUES (pid, old."businessID", now(), 'decre', 0 );
+    --else
+    	INSERT INTO "SCAN_TOTAL" VALUES (pid, old."businessID", now(), 'decre', oldTotal-1 );
+	--end if;
+    
+    return null;
+END
+
+
+
+
+
+$$;
+
+
+ALTER FUNCTION public."decrement_scan_total-trgr_func"() OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1255 OID 41251)
+-- Name: increment_scan_total-trigger(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION "increment_scan_total-trigger"() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$DECLARE
+	pid character(100);
+    maxdt timeStamp;
+    oldTotal integer;
+BEGIN
+	select "patronEmail" from "ACCOUNT" where "cardID" = new."cardID" into pid;
+    select max("dateTime") from "SCAN_TOTAL" where "patronID" = pid and "businessID" = new."businessID" into maxdt;
+    select "total" from "SCAN_TOTAL" where "patronID" = pID AND "dateTime" = maxdt AND "businessID" = new."businessID" into oldTotal;
+    
+    --perform max("dateTime") from "SCAN_TOTAL" where "patronID" = 
+    --(select "patronEmail" from "ACCOUNT" where "cardID" = pid);
+    if oldTotal is null then
+		INSERT INTO "SCAN_TOTAL" VALUES (pid, new."businessID", new."timeStamp", 'New', 1 );
+    else
+    	INSERT INTO "SCAN_TOTAL" VALUES (pid, new."businessID", new."timeStamp", 'New', oldtotal+1 );
+    end if;
+    
+    return null;
+END
+$$;
+
+
+ALTER FUNCTION public."increment_scan_total-trigger"() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 185 (class 1259 OID 41252)
+-- Name: ACCOUNT; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "ACCOUNT" (
+    "patronEmail" character(100) NOT NULL,
+    "cardID" character(20) NOT NULL,
+    "accountStatus" character(20) NOT NULL
+);
+
+
+ALTER TABLE "ACCOUNT" OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 41255)
+-- Name: BUSINESS; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "BUSINESS" (
+    "businessID" integer NOT NULL,
+    "businessName" character(100) NOT NULL,
+    category character(10) NOT NULL,
+    "busDescr" text NOT NULL,
+    "businessEmail" character varying NOT NULL,
+    phone character(10) NOT NULL
+);
+
+
+ALTER TABLE "BUSINESS" OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 41261)
+-- Name: BUSINESS_businessID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "BUSINESS_businessID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "BUSINESS_businessID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2256 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: BUSINESS_businessID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "BUSINESS_businessID_seq" OWNED BY "BUSINESS"."businessID";
+
+
+--
+-- TOC entry 188 (class 1259 OID 41263)
+-- Name: CLAIMED_REWARD_claimID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "CLAIMED_REWARD_claimID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 99999999
+    CACHE 1;
+
+
+ALTER TABLE "CLAIMED_REWARD_claimID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 41265)
+-- Name: CLAIMED_REWARD; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "CLAIMED_REWARD" (
+    "patronID" character varying NOT NULL,
+    "rewardID" integer NOT NULL,
+    "claimTimeStamp" timestamp with time zone NOT NULL,
+    "claimID" integer DEFAULT nextval('"CLAIMED_REWARD_claimID_seq"'::regclass) NOT NULL
+);
+
+
+ALTER TABLE "CLAIMED_REWARD" OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 41272)
+-- Name: EMPLOYEE; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "EMPLOYEE" (
+    "businessID" integer NOT NULL,
+    emplid character varying NOT NULL,
+    "empStatus" character(10) NOT NULL,
+    "locationID" integer NOT NULL
+);
+
+
+ALTER TABLE "EMPLOYEE" OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 41278)
+-- Name: LOCATION; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "LOCATION" (
+    "businessID" integer NOT NULL,
+    "locationID" integer NOT NULL,
+    address1 character(250) NOT NULL,
+    address2 character(250),
+    city character(100) NOT NULL,
+    state character(2) NOT NULL,
+    "postalCode" character(5) NOT NULL,
+    email character(100) NOT NULL,
+    phone character(10) NOT NULL,
+    "locationStatus" character varying NOT NULL
+);
+
+
+ALTER TABLE "LOCATION" OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 41284)
+-- Name: LOCATION_locationID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "LOCATION_locationID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "LOCATION_locationID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2257 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: LOCATION_locationID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "LOCATION_locationID_seq" OWNED BY "LOCATION"."locationID";
+
+
+--
+-- TOC entry 193 (class 1259 OID 41286)
+-- Name: NFC_CARD; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "NFC_CARD" (
+    "cardID" character(20) NOT NULL
+);
+
+
+ALTER TABLE "NFC_CARD" OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 41289)
+-- Name: NFC_READER; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "NFC_READER" (
+    "serialNum" character varying(20) NOT NULL,
+    pin character varying(20) NOT NULL,
+    model character varying(20) NOT NULL,
+    "readerStatus" character varying NOT NULL
+);
+
+
+ALTER TABLE "NFC_READER" OWNER TO postgres;
+
+--
+-- TOC entry 195 (class 1259 OID 41295)
+-- Name: READER_LOCATION; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "READER_LOCATION" (
+    "serialNum" character varying(20) NOT NULL,
+    "locationID" integer NOT NULL,
+    "readerLocationStatus" character(10) NOT NULL
+);
+
+
+ALTER TABLE "READER_LOCATION" OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 41298)
+-- Name: REWARD; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "REWARD" (
+    "rewardID" integer NOT NULL,
+    "businessID" integer NOT NULL,
+    title character(250) NOT NULL,
+    descr text NOT NULL,
+    "pointsNeeded" integer NOT NULL,
+    "beginDate" date NOT NULL,
+    "endDate" date,
+    "rewardStatus" character varying NOT NULL
+);
+
+
+ALTER TABLE "REWARD" OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 41304)
+-- Name: REWARD_rewardID_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE "REWARD_rewardID_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE "REWARD_rewardID_seq" OWNER TO postgres;
+
+--
+-- TOC entry 2258 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: REWARD_rewardID_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE "REWARD_rewardID_seq" OWNED BY "REWARD"."rewardID";
+
+
+--
+-- TOC entry 198 (class 1259 OID 41306)
+-- Name: SCAN; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "SCAN" (
+    "cardID" character(20) NOT NULL,
+    "timeStamp" timestamp with time zone NOT NULL,
+    "locationID" integer NOT NULL,
+    "businessID" integer NOT NULL
+);
+
+
+ALTER TABLE "SCAN" OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 41309)
+-- Name: SCAN_TOTAL; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "SCAN_TOTAL" (
+    "patronID" character(100) NOT NULL,
+    "businessID" integer NOT NULL,
+    "dateTime" timestamp with time zone NOT NULL,
+    "transactionType" character(10) NOT NULL,
+    total integer DEFAULT 0
+);
+
+
+ALTER TABLE "SCAN_TOTAL" OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 41313)
+-- Name: TRANSLATE; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "TRANSLATE" (
+    "transID" character varying NOT NULL,
+    category character varying NOT NULL,
+    value character varying NOT NULL,
+    "effectiveDate" timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE "TRANSLATE" OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 41319)
+-- Name: id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    MAXVALUE 999999999999999
+    CACHE 1;
+
+
+ALTER TABLE id_seq OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 41321)
+-- Name: USERS; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE "USERS" (
+    email character varying NOT NULL,
+    password character varying NOT NULL,
+    status character varying NOT NULL,
+    "lastName" character(50) NOT NULL,
+    "firstName" character(50) NOT NULL,
+    phone character(10) NOT NULL,
+    address1 character(250) NOT NULL,
+    city character(100) NOT NULL,
+    address2 character(250),
+    state character(2) NOT NULL,
+    "postalCode" character(5) NOT NULL,
+    role character varying,
+    id smallint DEFAULT nextval('id_seq'::regclass),
+    updated_at timestamp with time zone,
+    created_at timestamp with time zone,
+    remember_token character varying(100)
+);
+
+
+ALTER TABLE "USERS" OWNER TO postgres;
+
+--
+-- TOC entry 2259 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: COLUMN "USERS".role; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON COLUMN "USERS".role IS 'patron
+admin
+owner
+empl
+busadmin';
+
+
+--
+-- TOC entry 203 (class 1259 OID 41328)
+-- Name: vw-test; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW "vw-test" AS
+ SELECT "ACCOUNT"."patronEmail",
+    "ACCOUNT"."cardID",
+    "ACCOUNT"."accountStatus"
+   FROM "ACCOUNT";
+
+
+ALTER TABLE "vw-test" OWNER TO postgres;
+
+--
+-- TOC entry 2072 (class 2604 OID 41332)
+-- Name: BUSINESS businessID; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "BUSINESS" ALTER COLUMN "businessID" SET DEFAULT nextval('"BUSINESS_businessID_seq"'::regclass);
+
+
+--
+-- TOC entry 2074 (class 2604 OID 41333)
+-- Name: LOCATION locationID; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "LOCATION" ALTER COLUMN "locationID" SET DEFAULT nextval('"LOCATION_locationID_seq"'::regclass);
+
+
+--
+-- TOC entry 2075 (class 2604 OID 41334)
+-- Name: REWARD rewardID; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "REWARD" ALTER COLUMN "rewardID" SET DEFAULT nextval('"REWARD_rewardID_seq"'::regclass);
+
+
+--
+-- TOC entry 2079 (class 2606 OID 41336)
+-- Name: ACCOUNT ACCOUNT_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "ACCOUNT"
+    ADD CONSTRAINT "ACCOUNT_pkey" PRIMARY KEY ("patronEmail", "cardID");
+
+
+--
+-- TOC entry 2083 (class 2606 OID 41338)
+-- Name: BUSINESS BUSINESS_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "BUSINESS"
+    ADD CONSTRAINT "BUSINESS_pkey" PRIMARY KEY ("businessID");
+
+
+--
+-- TOC entry 2085 (class 2606 OID 41340)
+-- Name: CLAIMED_REWARD CLAIMED_REWARD_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "CLAIMED_REWARD"
+    ADD CONSTRAINT "CLAIMED_REWARD_pkey" PRIMARY KEY ("claimID");
+
+
+--
+-- TOC entry 2088 (class 2606 OID 41342)
+-- Name: EMPLOYEE EMPLOYEE-pk; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "EMPLOYEE"
+    ADD CONSTRAINT "EMPLOYEE-pk" PRIMARY KEY ("businessID", emplid, "locationID");
+
+
+--
+-- TOC entry 2092 (class 2606 OID 41344)
+-- Name: LOCATION LOCATION_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "LOCATION"
+    ADD CONSTRAINT "LOCATION_pkey" PRIMARY KEY ("businessID", "locationID");
+
+
+--
+-- TOC entry 2095 (class 2606 OID 41346)
+-- Name: NFC_CARD NFC_CARD_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "NFC_CARD"
+    ADD CONSTRAINT "NFC_CARD_pkey" PRIMARY KEY ("cardID");
+
+
+--
+-- TOC entry 2097 (class 2606 OID 41348)
+-- Name: NFC_READER NFC_READER_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "NFC_READER"
+    ADD CONSTRAINT "NFC_READER_pkey" PRIMARY KEY ("serialNum");
+
+
+--
+-- TOC entry 2099 (class 2606 OID 41350)
+-- Name: READER_LOCATION READER_LOCATION_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "READER_LOCATION"
+    ADD CONSTRAINT "READER_LOCATION_pkey" PRIMARY KEY ("serialNum", "locationID");
+
+
+--
+-- TOC entry 2101 (class 2606 OID 41352)
+-- Name: REWARD REWARD_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "REWARD"
+    ADD CONSTRAINT "REWARD_pkey" PRIMARY KEY ("rewardID");
+
+
+--
+-- TOC entry 2108 (class 2606 OID 41354)
+-- Name: SCAN_TOTAL SCAN_TOTAL_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN_TOTAL"
+    ADD CONSTRAINT "SCAN_TOTAL_pkey" PRIMARY KEY ("patronID", "businessID", "dateTime");
+
+
+--
+-- TOC entry 2104 (class 2606 OID 41356)
+-- Name: SCAN SCAN_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN"
+    ADD CONSTRAINT "SCAN_pkey" PRIMARY KEY ("cardID", "timeStamp");
+
+
+--
+-- TOC entry 2112 (class 2606 OID 41358)
+-- Name: TRANSLATE TRANSLATE_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "TRANSLATE"
+    ADD CONSTRAINT "TRANSLATE_pkey" PRIMARY KEY ("transID");
+
+
+--
+-- TOC entry 2114 (class 2606 OID 41360)
+-- Name: USERS USERS_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "USERS"
+    ADD CONSTRAINT "USERS_pkey" PRIMARY KEY (email);
+
+
+--
+-- TOC entry 2080 (class 1259 OID 41361)
+-- Name: fki_fk-account-patronEmail; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-account-patronEmail" ON "ACCOUNT" USING btree ("patronEmail");
+
+
+--
+-- TOC entry 2089 (class 1259 OID 41362)
+-- Name: fki_fk-business; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-business" ON "EMPLOYEE" USING btree ("businessID");
+
+
+--
+-- TOC entry 2102 (class 1259 OID 41363)
+-- Name: fki_fk-business-businessID; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-business-businessID" ON "REWARD" USING btree ("businessID");
+
+
+--
+-- TOC entry 2109 (class 1259 OID 41364)
+-- Name: fki_fk-business-businessid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-business-businessid" ON "SCAN_TOTAL" USING btree ("businessID");
+
+
+--
+-- TOC entry 2110 (class 1259 OID 41365)
+-- Name: fki_fk-claimedReward-patronid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-claimedReward-patronid" ON "SCAN_TOTAL" USING btree ("patronID");
+
+
+--
+-- TOC entry 2090 (class 1259 OID 41366)
+-- Name: fki_fk-employee-emplid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-employee-emplid" ON "EMPLOYEE" USING btree (emplid);
+
+
+--
+-- TOC entry 2105 (class 1259 OID 41367)
+-- Name: fki_fk-location; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-location" ON "SCAN" USING btree ("locationID", "businessID");
+
+
+--
+-- TOC entry 2093 (class 1259 OID 41368)
+-- Name: fki_fk-location-businessID; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-location-businessID" ON "LOCATION" USING btree ("businessID");
+
+
+--
+-- TOC entry 2081 (class 1259 OID 41369)
+-- Name: fki_fk-nfc_card-cardID; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-nfc_card-cardID" ON "ACCOUNT" USING btree ("cardID");
+
+
+--
+-- TOC entry 2106 (class 1259 OID 41370)
+-- Name: fki_fk-nfc_card-cardid; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-nfc_card-cardid" ON "SCAN" USING btree ("cardID");
+
+
+--
+-- TOC entry 2086 (class 1259 OID 41371)
+-- Name: fki_fk-reward-rewardID; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX "fki_fk-reward-rewardID" ON "CLAIMED_REWARD" USING btree ("rewardID");
+
+
+--
+-- TOC entry 2127 (class 2620 OID 41436)
+-- Name: CLAIMED_REWARD claimed_reward-trgr; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "claimed_reward-trgr" BEFORE INSERT ON "CLAIMED_REWARD" FOR EACH ROW EXECUTE PROCEDURE "claimed_rwd-trgr_func"();
+
+
+--
+-- TOC entry 2128 (class 2620 OID 41372)
+-- Name: SCAN decrement_scan_total-decrement_trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "decrement_scan_total-decrement_trigger" AFTER DELETE ON "SCAN" FOR EACH ROW EXECUTE PROCEDURE "decrement_scan_total-trgr_func"();
+
+
+--
+-- TOC entry 2129 (class 2620 OID 41373)
+-- Name: SCAN increment_scan_tot-trigger; Type: TRIGGER; Schema: public; Owner: postgres
+--
+
+CREATE TRIGGER "increment_scan_tot-trigger" AFTER INSERT ON "SCAN" FOR EACH ROW EXECUTE PROCEDURE "increment_scan_total-trigger"();
+
+
+--
+-- TOC entry 2115 (class 2606 OID 41374)
+-- Name: ACCOUNT fk-account-patronEmail; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "ACCOUNT"
+    ADD CONSTRAINT "fk-account-patronEmail" FOREIGN KEY ("patronEmail") REFERENCES "USERS"(email);
+
+
+--
+-- TOC entry 2122 (class 2606 OID 41379)
+-- Name: REWARD fk-business-businessID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "REWARD"
+    ADD CONSTRAINT "fk-business-businessID" FOREIGN KEY ("businessID") REFERENCES "BUSINESS"("businessID");
+
+
+--
+-- TOC entry 2125 (class 2606 OID 41384)
+-- Name: SCAN_TOTAL fk-business-businessid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN_TOTAL"
+    ADD CONSTRAINT "fk-business-businessid" FOREIGN KEY ("businessID") REFERENCES "BUSINESS"("businessID");
+
+
+--
+-- TOC entry 2117 (class 2606 OID 41389)
+-- Name: CLAIMED_REWARD fk-claimedReward-patronID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "CLAIMED_REWARD"
+    ADD CONSTRAINT "fk-claimedReward-patronID" FOREIGN KEY ("patronID") REFERENCES "USERS"(email);
+
+
+--
+-- TOC entry 2119 (class 2606 OID 41394)
+-- Name: EMPLOYEE fk-employee-emplid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "EMPLOYEE"
+    ADD CONSTRAINT "fk-employee-emplid" FOREIGN KEY (emplid) REFERENCES "USERS"(email);
+
+
+--
+-- TOC entry 2123 (class 2606 OID 41399)
+-- Name: SCAN fk-location; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN"
+    ADD CONSTRAINT "fk-location" FOREIGN KEY ("locationID", "businessID") REFERENCES "LOCATION"("locationID", "businessID");
+
+
+--
+-- TOC entry 2120 (class 2606 OID 41404)
+-- Name: EMPLOYEE fk-location; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "EMPLOYEE"
+    ADD CONSTRAINT "fk-location" FOREIGN KEY ("businessID", "locationID") REFERENCES "LOCATION"("businessID", "locationID");
+
+
+--
+-- TOC entry 2121 (class 2606 OID 41409)
+-- Name: LOCATION fk-location-businessID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "LOCATION"
+    ADD CONSTRAINT "fk-location-businessID" FOREIGN KEY ("businessID") REFERENCES "BUSINESS"("businessID");
+
+
+--
+-- TOC entry 2116 (class 2606 OID 41414)
+-- Name: ACCOUNT fk-nfc_card-cardID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "ACCOUNT"
+    ADD CONSTRAINT "fk-nfc_card-cardID" FOREIGN KEY ("cardID") REFERENCES "NFC_CARD"("cardID");
+
+
+--
+-- TOC entry 2124 (class 2606 OID 41419)
+-- Name: SCAN fk-nfc_card-cardid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN"
+    ADD CONSTRAINT "fk-nfc_card-cardid" FOREIGN KEY ("cardID") REFERENCES "NFC_CARD"("cardID");
+
+
+--
+-- TOC entry 2118 (class 2606 OID 41424)
+-- Name: CLAIMED_REWARD fk-reward-rewardID; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "CLAIMED_REWARD"
+    ADD CONSTRAINT "fk-reward-rewardID" FOREIGN KEY ("rewardID") REFERENCES "REWARD"("rewardID");
+
+
+--
+-- TOC entry 2126 (class 2606 OID 41429)
+-- Name: SCAN_TOTAL fk-user-id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY "SCAN_TOTAL"
+    ADD CONSTRAINT "fk-user-id" FOREIGN KEY ("patronID") REFERENCES "USERS"(email);
+
+
+-- Completed on 2017-11-29 18:04:57
+
+--
+-- PostgreSQL database dump complete
+--
+
