@@ -17,6 +17,7 @@ class BusinessRewardController extends BusinessController
 {
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
+    // Shows Business Rewards Page
     public function show($status)
     {
       $businessId = $this->getBusinessID();
@@ -28,6 +29,7 @@ class BusinessRewardController extends BusinessController
         ->orderby('title', 'asc')->get();
       return view('business/manage-rewards',['rewards' => $rewards, 'status'=> $status]);
     }
+    //Create a new reward
     public function showCreate()
     {
       return view('business.add-reward');
@@ -42,8 +44,6 @@ class BusinessRewardController extends BusinessController
                   'title' => $request['title'],
                   'descr' => $request['descr'],
                   'pointsNeeded' => $request['pointsNeeded'],
-                  'beginDate' => $request['beginDate'],
-                  'endDate' => $request['endDate'],
                   'businessID' => $businessID,
                   'rewardStatus' => $rewardStatus,
                 ]);
@@ -56,10 +56,9 @@ class BusinessRewardController extends BusinessController
         'title' => 'required|string|max:255',
         'descr' => 'required|string|max:255',
         'pointsNeeded' => 'required|string|max:5',
-        'beginDate' => 'required',
-        'endDate' => 'required',
       ]);
     }
+    //Change the Status of a reward
     public function changeStatus($id) {
       $reward = DB::table('REWARD')->where('rewardID',$id)->first();
 
@@ -77,6 +76,7 @@ class BusinessRewardController extends BusinessController
           return redirect('/manageRewards/inactv');
       }
     }
+    //Edit reward info
     public function showEdit($id)
     {
       $reward = DB::table('REWARD')
@@ -93,8 +93,6 @@ class BusinessRewardController extends BusinessController
                  'title' => $request['title'],
                  'descr' => $request['descr'],
                  'pointsNeeded' => $request['pointsNeeded'],
-                 'beginDate' => $request['beginDate'],
-                 'endDate' => $request['endDate'],
                ]);
       $status = DB::table('REWARD')->where('rewardID',$id)->value('rewardStatus');
       $redirect = '/manageRewards/'.$status;

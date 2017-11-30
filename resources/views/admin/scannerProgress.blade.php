@@ -27,8 +27,8 @@
           insert = false;
           setTimeout(function () {
              div.setAttribute("id","standby");
-          }, 500);
-        }, 1500*i);
+          }, 350);
+        }, 1000*i);
 
       })(i);
     }
@@ -56,7 +56,30 @@
         <div class="col-md-6 col-md-offset-4">
           <a href="/scanner" class="btn btn-info pull-right" style="margin-right: 3px;display:inline;">Continue</a>
         </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">Results</div>
+        <div class="panel-body table-responsive">
+          <table class="table table-striped table-bordered table-hover">
+            <tr>
+              <th>Card ID</th>
+              <th>Scan Status</th>
+            </tr>
+            <tbody>
+              @for($i=0;$i<$length;$i++)
+              <tr>
+                <td>{{$cards[$i]}}</td>
+                @if($scans[$i])<td>Success</td>
+                @else<td>Failure</td>@endif
+              </tr>
+              @endfor
+            </tbody>
+          </table>
 
+        </div>
+      </div>
     </div>
 
 

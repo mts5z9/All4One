@@ -15,7 +15,7 @@ class BusinessEmployeeController extends BusinessController
 {
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
-
+    //Shows Employee managment page
     public function show($status)
     {
       $businessId = $this->getBusinessID();
@@ -29,6 +29,7 @@ class BusinessEmployeeController extends BusinessController
         ->orderby('USERS.lastName', 'asc')->get(); //Need query for business employees
       return view('business/manage-employees',['employees' => $employees, 'status' => $status]);
     }
+    //Edit individual employee data
     public function showEdit($id)
     {
       $businessId = $this->getBusinessID();
@@ -92,6 +93,7 @@ class BusinessEmployeeController extends BusinessController
                   ]);
         return;
     }
+    //Change the status of an employee to either actv or inactv
     public function changeStatus($id) {
       $emp = DB::table('USERS')->where('id',$id)->first();
 

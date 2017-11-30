@@ -16,7 +16,6 @@
                       <th>Reward</th>
                       <th>Description</th>
                       <th>Cost</th>
-                      <th style="width:20%">Active Dates</th>
                       <th style="width:20%"></th>
                     </tr>
                     <tbody>
@@ -25,7 +24,6 @@
                         <td>{{$reward->title}}</td>
                         <td>{{$reward->descr}}</td>
                         <td>{{$reward->pointsNeeded}}</td>
-                        <td>{{$reward->beginDate}} to {{$reward->endDate}}</td>
                         <td>
                           <a href="/editReward/{{$reward->rewardID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Edit</a>
                           @if($reward->rewardStatus == 'actv')<a href="/rewardStatus/{{$reward->rewardID}}" class="btn btn-info pull-left" style="margin-right: 3px;">Deactivate</a>

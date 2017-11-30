@@ -17,7 +17,7 @@ class BusinessController extends Controller
 {
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
-    
+    //Returns the locations of the users business of either actv or inactv status
     public function getLocations($status)
     {
       $businessId = $this->getBusinessID();
@@ -30,6 +30,7 @@ class BusinessController extends Controller
         ->orderby('locationID', 'asc')->get();
       return $locations;
     }
+    //Returns all rewards related to the business that are actv
     public function getRewards()
     {
       $businessID = $this->getBusinessID();
@@ -92,7 +93,6 @@ class BusinessController extends Controller
 
     }
     //Manage Scans
-
     public function showManageScans()
     {
       $businessId = $this->getBusinessID();

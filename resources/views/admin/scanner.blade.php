@@ -53,16 +53,23 @@
                                 <option value = "5">5</option>
                                 <option value = "10">10</option>
                                 <option value = "20">20</option>
+                                <option value= "50">50</option>
                           </select>
                         </div>
                       </div>
                       <div class="form-group">
-                          <div class="col-md-6 col-md-offset-4">
-                              <button type="submit" class="btn btn-primary">
-                                  New Scan
-                              </button>
-                          </div>
-                      </div>
+
+                              <label for='badCards' class="col-md-offset-2 col-md-6 control-label">
+                                <input name="badCards" id="badCards" type="checkbox" value="true"> Include bad card scans
+                              </label>
+                       </div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">
+                                    New Scan
+                                </button>
+                            </div>
+                        </div>
                   </form>
                 </div>
             </div>

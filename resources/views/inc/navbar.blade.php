@@ -36,12 +36,14 @@
           <li><a href="/rewardHistory">Reward History</a></li>
           <li><a href="/scanHistory">Scan History</a></li>
           <li><a href="/rewards">Redeem Rewards</a></li>
+          <li><a href="/availableRewards">Available Rewards</a></li>
           <li><a href="/participatingBusinesses">Participating Businesses</a></li>
         @endif
 
         <!--business links-->
         @if($userRole == 'employee')
-          <a href="/manageScans">Scans</a>
+          <li><a href="/manageScans">Manage Scans</a></li>
+          <li><a href="/managePatrons">Manage Customers</a></li>
         @endif
         @if($userRole == 'Owner'||$userRole == 'bAdmin')
         <li class="dropdown">
@@ -51,6 +53,7 @@
           <ul class="dropdown-menu" role="menu">
             <li>
                 <a href="/manageScans">Scans</a>
+                <a href="/managePatrons">Customers</a>
                 <a href="/manageRewards/actv">Rewards</a>
                 <a href="/manageEmployees/actv">Employees</a>
                 <a href="/manageLocations/actv">Locations</a>

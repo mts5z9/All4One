@@ -44,28 +44,7 @@
                           </div>
                       </div>
 
-                      <div class="form-group{{ $errors->has('beginDate') ? ' has-error' : '' }}">
-                          <label for="beginDate" class="col-md-4 control-label">Start Date</label>
-                          <div class="col-md-6">
-                              <input type="text" name="beginDate" id="beginDate" alt="date" class="form-control IP_calendar" title="Y-m-d" value="{{$reward->beginDate}}" required autofocus>
-                              @if ($errors->has('beginDate'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('beginDate') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
-                      <div class="form-group{{ $errors->has('endDate') ? ' has-error' : '' }}">
-                          <label for="endDate" class="col-md-4 control-label">End Date</label>
-                          <div class="col-md-6">
-                              <input type="text" name="endDate" id="endDate" alt="date" class="form-control IP_calendar" title="Y-m-d" value="{{$reward->endDate}}" required autofocus>
-                              @if ($errors->has('endDate'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('endDate') }}</strong>
-                                  </span>
-                              @endif
-                          </div>
-                      </div>
+                      
                       <div class="form-group">
                           <div class="col-md-6 col-md-offset-4">
                               <button type="submit" class="btn btn-primary">

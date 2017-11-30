@@ -17,7 +17,7 @@ class BusinessScannerController extends BusinessController
 {
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
-
+    //Shows all of the businesses Scanners
     public function show($status)
     {
       $businessId = $this->getBusinessID();
@@ -57,6 +57,7 @@ class BusinessScannerController extends BusinessController
         ]);
         return redirect('/manageScanners/actv');
     }
+    //Edit scanner information
     public function showEdit($id)
     {
       $scanner = DB::table('NFC_READER')
@@ -84,6 +85,7 @@ class BusinessScannerController extends BusinessController
         'model' => 'string|max:20',
       ]);
     }
+    //Change the status of a scanner to actv or inactv
     public function changeStatus($id) {
       $scanner = DB::table('NFC_READER')->where('serialNum',$id)->first();
 

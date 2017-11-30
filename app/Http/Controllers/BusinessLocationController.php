@@ -15,12 +15,13 @@ use Khill\Lavacharts\Lavacharts;
 
 class BusinessLocationController extends BusinessController
 {
-
+    //Shows Location Management Page
     public function show($status)
     {
       $locations = $this->getLocations($status);
       return view('business/manage-locations',['locations' => $locations,'status'=>$status]);
     }
+    //Edit individual location information
     public function showEdit($id)
     {
       $location = DB::table('LOCATION')
@@ -82,6 +83,7 @@ class BusinessLocationController extends BusinessController
         'phone' => 'required|string|max:10',
       ]);
     }
+    //Change the location status to inactv or actv
     public function changeStatus($id) {
       $location = DB::table('LOCATION')->where('locationID',$id)->first();
       if($location->locationStatus == 'actv')

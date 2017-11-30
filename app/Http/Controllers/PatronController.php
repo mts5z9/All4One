@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use all4one\Mail\rewardClaimed;
 
 class PatronController extends Controller
 {
@@ -22,6 +24,7 @@ class PatronController extends Controller
     {
       return view('patron.register-card');
     }
+    //New card ID must be unique
     public function registerCard(Request $request)
     {
       $userEmail = Auth::user()->email;
@@ -50,6 +53,7 @@ class PatronController extends Controller
       }
       return redirect('/portalDirect');
     }
+    //Shows rewards for business where the customer has scanned thier card
     public function showRewards()
     {
       $cardID = DB::table('ACCOUNT')->where('patronEmail','=',Auth::user()->email)->value('cardID');
@@ -75,51 +79,86 @@ class PatronController extends Controller
       }
       return view('patron.rewards',['rewards'=>$rewards]);
     }
+    //Shows rewards that the customer has claimed but not been used yet
+    public function showClaimedRewards()
+    {
+      $cardID = DB::table('ACCOUNT')->where('patronEmail','=',Auth::user()->email)->value('cardID');
+      $rewards = DB::table('CLAIMED_REWARD')
+                  ->join('REWARD','REWARD.rewardID','=','CLAIMED_REWARD.rewardID')
+                  ->join('BUSINESS','BUSINESS.businessID','=','REWARD.businessID')
+                  ->where('CLAIMED_REWARD.patronID',Auth::user()->email)
+                  ->where('CLAIMED_REWARD.status','new')
+                  ->get();
+      return view('patron.availableRewards',['rewards'=>$rewards]);
+    }
+    //Claims a reward from the reward page if the customer has enough points
     public function claim($rewardID)
     {
-      $pointsTotal = DB::table('SCAN_TOTAL')
+      $reward = DB::table('SCAN_TOTAL')
                         ->join('REWARD', 'REWARD.businessID','=','SCAN_TOTAL.businessID')
+                        ->join('BUSINESS', 'BUSINESS.businessID','=','REWARD.businessID')
                         ->where([
                                 ['SCAN_TOTAL.patronID', Auth::user()->email],
                                 ['REWARD.rewardID', $rewardID],
                                 ])
                         ->latest('SCAN_TOTAL.dateTime')
-                        ->value('SCAN_TOTAL.total');
-      $pointsSpent = DB::table('REWARD')->where('rewardID',$rewardID)->value('pointsNeeded');
+                        ->select('SCAN_TOTAL.total','REWARD.*','BUSINESS.businessName')->first();
+
+      $pointsTotal = $reward->total;
+      $pointsSpent = $reward->pointsNeeded;
       if($pointsTotal >= $pointsSpent)
       {
-        DB::table('CLAIMED_REWARD')
+        $status = DB::table('CLAIMED_REWARD')
         ->insert([
                   'patronID' => Auth::user()->email,
                   'rewardID' => $rewardID,
                   'claimTimeStamp' => date('Y-m-d H:i:sO'),
                   'pointsSpent' => $pointsSpent,
+                  'status' => 'new'
                 ]);
+        if($status)
+        {
+
+          $rewardInfo = [
+            'name' => Auth::user()->firstName .' '. Auth::user()->lastName,
+            'pointsSpent' => $pointsSpent,
+            'pointsRemaining' => $pointsTotal - $pointsSpent,
+            'title' => $reward->title,
+            'descr' => $reward->descr,
+            'businessName' => $reward->businessName
+          ];
+
+          Mail::to(Auth::user()->email)->send(new rewardClaimed($rewardInfo));
+        }
       }
       return redirect('/rewards');
     }
+
     public function validateCard(array $data)
     {
       return Validator::make($data, [
         'cardID' => 'required|string|max:255|unique:ACCOUNT',
       ]);
     }
+    //Shows list of all participating businesses with all4one accounts
     public function showParticipatingBusinesses()
     {
       $businesses = DB::table('BUSINESS')
         ->orderby('businessName','asc')->get();
       return view('patron.participating-businesses',['businesses'=> $businesses]);
     }
+    //shows history of rewards that the customer has claimed
     public function showRewardHistory()
     {
       $rewards = DB::table('CLAIMED_REWARD')
                   ->join('REWARD','REWARD.rewardID','=','CLAIMED_REWARD.rewardID')
                   ->join('BUSINESS','BUSINESS.businessID','=','REWARD.businessID')
                   ->where('CLAIMED_REWARD.patronID',Auth::user()->email)
-                  ->select('BUSINESS.businessName','REWARD.title','REWARD.descr','CLAIMED_REWARD.pointsSpent','CLAIMED_REWARD.claimTimeStamp')
+                  ->select('BUSINESS.businessName','REWARD.title','REWARD.descr','CLAIMED_REWARD.pointsSpent','CLAIMED_REWARD.claimTimeStamp','CLAIMED_REWARD.status')
                   ->orderBy('CLAIMED_REWARD.claimTimeStamp','dec')->get();
       return view('patron.reward-history',['rewards'=> $rewards]);
     }
+    //shows history of the scan history for thier account
     public function showScanHistory()
     {
       $cardID = DB::table('ACCOUNT')->where('patronEmail',Auth::user()->email)->value('cardID');

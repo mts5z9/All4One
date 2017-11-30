@@ -19,6 +19,7 @@ class UserController extends Controller
     }
     use RedirectsUsers;
     protected $redirectTo = '/portalDirect';
+    //Edit user account
     public function showEdit($id)
     {
       $user = DB::table('USERS')
@@ -49,6 +50,7 @@ class UserController extends Controller
     }
     protected function updateValidator(array $data, $email)
     {
+      //if email is the same
       if($data['email'] == $email){
         return Validator::make($data, [
             'firstName' => 'required|string|max:255',
@@ -61,7 +63,7 @@ class UserController extends Controller
             'postalCode' => 'string|max:5',
             'email' => 'required|string|email|max:255',
         ]);
-      }else
+      }else // if email has changed
           return Validator::make($data, [
               'firstName' => 'required|string|max:255',
               'lastName' => 'required|string|max:255',

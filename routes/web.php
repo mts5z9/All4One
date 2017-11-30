@@ -32,6 +32,7 @@ Route::middleware(['patron'])->group(function () {
   Route::get('/rewardHistory','PatronController@showRewardHistory');
   Route::get('/scanHistory','PatronController@showScanHistory');
   Route::get('/redeem', function() { return view('patron/redeem'); });
+  Route::get('/availableRewards','PatronController@showClaimedRewards');
 });
 
 //Business Portal Routes
@@ -77,8 +78,15 @@ Route::middleware(['businessOwner'])->group(function() {
   Route::get('/editBusinessAccount','BusinessController@showEditAccount');
   Route::post('/edit-businessAccount','BusinessController@editAccount');
 });
-
-Route::get('/manageScans', 'BusinessController@showManageScans');
+Route::middleware(['employee'])->group(function() {
+  Route::get('/manageScans', 'BusinessScanController@showManageScans');
+  Route::get('/managePatrons', 'BusinessScanController@showManagePatrons');
+  Route::get('/customerRewards/{id}','BusinessScanController@showpatronRewards');
+  Route::get('/useReward/{id}/{email}/{timeStamp}','BusinessScanController@useReward');
+  Route::post('/searchManagePatrons','BusinessScanController@searchManagePatrons');
+  Route::get('/addScan/{id}', 'BusinessScanController@addScan');
+  Route::get('/removeScan/{id}/{timeStamp}','BusinessScanController@removeScan');
+});
 
 //Admin Portal Routes
 Route::middleware(['admin'])->group(function() {

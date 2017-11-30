@@ -17,6 +17,8 @@ class BusinessStatsController extends BusinessController
 {
 
     //statistics
+    //Depending on the time frame this function will take all relevant data from the DB and put it into a
+    //format that can be utilized by lavaCharts
     public function showRewardStats($timePeriod)
     {
       $lava = new Lavacharts; // See note below for Laravel
@@ -328,7 +330,7 @@ class BusinessStatsController extends BusinessController
 
       return view('business.statistics.scanStats',['lava' => $lava]);
     }
-
+    //Get the length of each month
     public function getMonthDays($month)
     {
       if($month == 1 ||$month == 3 ||$month == 5 ||$month == 7 ||$month == 8 ||$month == 10 ||$month == 12)
